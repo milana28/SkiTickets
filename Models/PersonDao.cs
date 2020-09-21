@@ -1,10 +1,10 @@
 namespace SkiTickets.Models
 {
-    public class Person
+    public class PersonDao
     {
         public int Id { set; get; }
         public string FirstName { set; get; }
         public string LastName { set; get; }
-        public string Age { set; get; }
+        public int AgeId { set; get; }
     }
 }

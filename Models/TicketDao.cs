@@ -2,11 +2,10 @@ using System;
 
 namespace SkiTickets.Models
 {
-    public class PriceList
+    public class TicketDao
     {
         public int Id { set; get; }
-        public Ticket Ticket { set; get; }
-        public float Price { set; get; }
+        public int TicketTypeId { set; get; }
         public DateTime From { set; get; }
         public DateTime To { set; get; }
     }
