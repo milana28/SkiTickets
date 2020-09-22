@@ -4,12 +4,14 @@ using System.Linq;
 using Dapper;
 using SkiTickets.Models;
 using SkiTickets.Utils;
+using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Domain
 {
     public interface IPerson
     { 
         List<Models.Person> GetAll();
+        Models.Person GetPersonById(int id);
     }
     
     public class Person : IPerson
@@ -29,7 +31,18 @@ namespace SkiTickets.Domain
             
             return personList;
         }
+        public Models.Person GetPersonById(int id)
+        {
+            const string sql = "SELECT * FROM SkiTickets.Person WHERE id = @personId";
+            var person = _database.QueryFirstOrDefault<PersonDao>(sql, new {personId = id});
 
+            if (person == null)
+            {
+                throw new PersonNotFoundException("Person does not exist!");
+            }
+
+            return TransformDaoToBusinessLogicPerson(person);
+        }
         public Models.Person TransformDaoToBusinessLogicPerson(PersonDao personDao)
         {
             const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @ageId";

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
+using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Controllers
 {
@@ -27,6 +28,26 @@ namespace SkiTickets.Controllers
                 return Ok(_person.GetAll());
             }
             catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Models.Person> GetPersonById(int id)
+        {
+            try
+            {
+                return Ok(_person.GetPersonById(id));
+            }
+            catch (PersonNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
