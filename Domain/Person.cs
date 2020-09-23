@@ -52,23 +52,11 @@ namespace SkiTickets.Domain
         public Models.Person GetPersonById(int id)
         {
             const string sql = "SELECT * FROM SkiTickets.Person WHERE id = @personId";
-            var person = _database.QueryFirstOrDefault<PersonDao>(sql, new {personId = id});
-
-            if (person == null)
-            {
-                throw new PersonNotFoundException("Person does not exist!");
-            }
-
-            return TransformDaoToBusinessLogicPerson(person);
+            return TransformDaoToBusinessLogicPerson(_database.QueryFirstOrDefault<PersonDao>(sql, new {personId = id}));
         }
         public Models.Person DeletePerson(int id)
         {
             var person = GetPersonById(id);
-            if (person == null)
-            {
-                throw new PersonNotFoundException("Person does not exist!");
-            }
-            
             const string sql = "DELETE FROM SkiTickets.Person WHERE id = @personId";
             _database.Execute(sql, new {personId = id});
 
@@ -76,12 +64,6 @@ namespace SkiTickets.Domain
         }
         public Models.Person UpdatePerson(int id, PersonDao personDao)
         {
-            var person = GetPersonById(id);
-            if (person == null)
-            {
-                throw new PersonNotFoundException("Person does not exist!");
-            }
-            
             var newPerson = new PersonDao()
             {
                 Id = id,

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
-using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
 
@@ -11,39 +10,23 @@ namespace SkiTickets.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PersonController : ControllerBase
+    public class AgeController : ControllerBase
     {
-        private readonly IPerson _person;
+        private readonly IAge _age;
 
-        public PersonController(IPerson person)
+        public AgeController(IAge age)
         {
-            _person = person;
-        }
-
-        [HttpPost]
-        [AgeValidFilter]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> CreatePerson([FromBody] PersonDao personDao)
-        {
-            try
-            {
-                return Created("https://localhost:5001/Person", _person.CreatePerson(personDao));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _age = age;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<List<Models.Person>> GetAll()
+        public ActionResult<List<Models.Age>> GetAll()
         {
             try
             {
-                return Ok(_person.GetAll());
+                return Ok(_age.GetAll());
             }
             catch(Exception e)
             {
@@ -52,17 +35,17 @@ namespace SkiTickets.Controllers
         }
         
         [HttpGet("{id}")]
-        [PersonExistsFilter]
+        [AgeExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> GetPersonById(int id)
+        public ActionResult<Models.Age> GetAgeById(int id)
         {
             try
             {
-                return Ok(_person.GetPersonById(id));
+                return Ok(_age.GetAgeById(id));
             }
-            catch (PersonNotFoundException e)
+            catch (AgeNotFoundException e)
             {
                 return NotFound(e.Message);
             }
@@ -73,17 +56,17 @@ namespace SkiTickets.Controllers
         }
 
         [HttpDelete("{id}")]
-        [PersonExistsFilter]
+        [AgeExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> DeletePerson(int id)
+        public ActionResult<Models.Age> DeleteAge(int id)
         {
             try
             {
-                return Ok(_person.DeletePerson(id));
+                return Ok(_age.DeleteAge(id));
             }
-            catch (PersonNotFoundException e)
+            catch (AgeNotFoundException e)
             {
                 return NotFound(e.Message);
             }
@@ -94,18 +77,17 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPut("{id}")]
-        [PersonExistsFilter]
-        [AgeValidFilter]
+        [AgeExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> UpdatePerson(int id, PersonDao personDao)
+        public ActionResult<Models.Age> UpdatePerson(int id, Models.Age ageDao)
         {
             try
             {
-                return Ok(_person.UpdatePerson(id, personDao));
+                return Ok(_age.UpdateAge(id, ageDao));
             }
-            catch (PersonNotFoundException e)
+            catch (AgeNotFoundException e)
             {
                 return NotFound(e.Message);
             }

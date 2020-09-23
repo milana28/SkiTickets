@@ -6,22 +6,21 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 
-namespace SkiTickets.Utils.Attributes
+namespace SkiTickets.Utils.Filters
 {
     [AttributeUsage(AttributeTargets.All)]
-    public sealed class AgeExistsAttribute : ActionFilterAttribute
+    public sealed class AgeExistsFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
-        private PersonDao _person = new PersonDao();
+        private int _ageId;
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _person = (PersonDao) context.ActionArguments["personDao"];
-            var ageId = _person.AgeId;
+            _ageId = (int) context.ActionArguments["id"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
             const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @id";
-            var age = database.QueryFirstOrDefault<PersonDao>(sql, new {id = ageId});
+            var age = database.QueryFirstOrDefault<PersonDao>(sql, new {id = _ageId});
 
             if (age == null)
             {
