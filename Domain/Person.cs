@@ -12,6 +12,10 @@ namespace SkiTickets.Domain
     { 
         List<Models.Person> GetAll();
         Models.Person GetPersonById(int id);
+        Models.Person CreatePerson(PersonDao personDao);
+        Models.Person DeletePerson(int id);
+        Models.Person TransformDaoToBusinessLogicPerson(PersonDao personDao);
+        Models.Person UpdatePerson(int id, PersonDao personDao);
     }
     
     public class Person : IPerson
@@ -22,7 +26,21 @@ namespace SkiTickets.Domain
         {
             _database = database.Get();
         }
-        
+
+        public Models.Person CreatePerson(PersonDao personDao)
+        {
+            var person = new PersonDao()
+            {
+                FirstName = personDao.FirstName,
+                LastName = personDao.LastName,
+                AgeId = personDao.AgeId
+            };
+
+            const string sql =
+                "INSERT INTO SkiTickets.Person VALUES (@firstName, @lastName, @ageId) SELECT * FROM SkiTickets.Person WHERE id = SCOPE_IDENTITY()";
+
+            return TransformDaoToBusinessLogicPerson(_database.QueryFirst<PersonDao>(sql, person));
+        }
         public List<Models.Person> GetAll()
         {
             var personList = new List<Models.Person>();
@@ -42,6 +60,41 @@ namespace SkiTickets.Domain
             }
 
             return TransformDaoToBusinessLogicPerson(person);
+        }
+        public Models.Person DeletePerson(int id)
+        {
+            var person = GetPersonById(id);
+            if (person == null)
+            {
+                throw new PersonNotFoundException("Person does not exist!");
+            }
+            
+            const string sql = "DELETE FROM SkiTickets.Person WHERE id = @personId";
+            _database.Execute(sql, new {personId = id});
+
+            return person;
+        }
+        public Models.Person UpdatePerson(int id, PersonDao personDao)
+        {
+            var person = GetPersonById(id);
+            if (person == null)
+            {
+                throw new PersonNotFoundException("Person does not exist!");
+            }
+            
+            var newPerson = new PersonDao()
+            {
+                Id = id,
+                FirstName = personDao.FirstName,
+                LastName = personDao.LastName,
+                AgeId = personDao.AgeId
+            };
+
+            const string sql =
+                "UPDATE SkiTickets.Person SET firstName = @firstName, lastName = @lastName, ageId = @ageId WHERE id = @id";
+            _database.Execute(sql, newPerson);
+
+            return GetPersonById(id);
         }
         public Models.Person TransformDaoToBusinessLogicPerson(PersonDao personDao)
         {
