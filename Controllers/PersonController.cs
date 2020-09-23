@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using SkiTickets.Domain;
 using SkiTickets.Models;
+using SkiTickets.Utils.Attributes;
 using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Controllers
@@ -21,6 +22,7 @@ namespace SkiTickets.Controllers
         }
 
         [HttpPost]
+        [AgeExists]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.Person> CreatePerson([FromBody] PersonDao personDao)
@@ -91,6 +93,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPut("{id}")]
+        [AgeExists]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
