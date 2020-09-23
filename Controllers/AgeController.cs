@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
+using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
 
@@ -81,11 +82,11 @@ namespace SkiTickets.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Age> UpdatePerson(int id, Models.Age ageDao)
+        public ActionResult<Models.Age> UpdatePerson(int id, AgeDto ageDto)
         {
             try
             {
-                return Ok(_age.UpdateAge(id, ageDao));
+                return Ok(_age.UpdateAge(id, ageDto));
             }
             catch (AgeNotFoundException e)
             {

@@ -20,7 +20,7 @@ namespace SkiTickets.Utils.Filters
            
             using IDbConnection database = new SqlConnection(MyConnectionString);
             const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @id";
-            var age = database.QueryFirstOrDefault<PersonDao>(sql, new {id = ageId});
+            var age = database.QueryFirstOrDefault<Age>(sql, new {id = ageId});
 
             if (age == null)
             {

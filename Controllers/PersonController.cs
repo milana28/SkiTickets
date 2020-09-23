@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
 using SkiTickets.Models;
+using SkiTickets.Utils;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
 
@@ -24,11 +25,11 @@ namespace SkiTickets.Controllers
         [AgeValidFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> CreatePerson([FromBody] PersonDao personDao)
+        public ActionResult<Models.Person> CreatePerson([FromBody] PersonDto personDto)
         {
             try
             {
-                return Created("https://localhost:5001/Person", _person.CreatePerson(personDao));
+                return Created("https://localhost:5001/Person", _person.CreatePerson(personDto));
             }
             catch (Exception e)
             {
@@ -99,11 +100,11 @@ namespace SkiTickets.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> UpdatePerson(int id, PersonDao personDao)
+        public ActionResult<Models.Person> UpdatePerson(int id, PersonDto personDto)
         {
             try
             {
-                return Ok(_person.UpdatePerson(id, personDao));
+                return Ok(_person.UpdatePerson(id, personDto));
             }
             catch (PersonNotFoundException e)
             {
@@ -111,7 +112,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
     }

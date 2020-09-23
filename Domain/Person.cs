@@ -4,7 +4,6 @@ using System.Linq;
 using Dapper;
 using SkiTickets.Models;
 using SkiTickets.Utils;
-using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Domain
 {
@@ -12,10 +11,10 @@ namespace SkiTickets.Domain
     { 
         List<Models.Person> GetAll();
         Models.Person GetPersonById(int id);
-        Models.Person CreatePerson(PersonDao personDao);
+        Models.Person CreatePerson(PersonDto personDto);
         Models.Person DeletePerson(int id);
         Models.Person TransformDaoToBusinessLogicPerson(PersonDao personDao);
-        Models.Person UpdatePerson(int id, PersonDao personDao);
+        Models.Person UpdatePerson(int id, PersonDto personDto);
     }
     
     public class Person : IPerson
@@ -27,13 +26,13 @@ namespace SkiTickets.Domain
             _database = database.Get();
         }
 
-        public Models.Person CreatePerson(PersonDao personDao)
+        public Models.Person CreatePerson(PersonDto personDto)
         {
             var person = new PersonDao()
             {
-                FirstName = personDao.FirstName,
-                LastName = personDao.LastName,
-                AgeId = personDao.AgeId
+                FirstName = personDto.FirstName,
+                LastName = personDto.LastName,
+                AgeId = personDto.AgeId
             };
 
             const string sql =
@@ -62,14 +61,14 @@ namespace SkiTickets.Domain
 
             return person;
         }
-        public Models.Person UpdatePerson(int id, PersonDao personDao)
+        public Models.Person UpdatePerson(int id, PersonDto personDto)
         {
             var newPerson = new PersonDao()
             {
                 Id = id,
-                FirstName = personDao.FirstName,
-                LastName = personDao.LastName,
-                AgeId = personDao.AgeId
+                FirstName = personDto.FirstName,
+                LastName = personDto.LastName,
+                AgeId = personDto.AgeId
             };
 
             const string sql =

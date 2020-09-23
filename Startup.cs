@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SkiTickets.Domain;
 using SkiTickets.Utils;
+using SkiTickets.Utils.Responses;
 
 namespace SkiTickets
 {
@@ -25,6 +27,16 @@ namespace SkiTickets
             services.AddSingleton<IDatabase, Database>();
             services.AddSingleton<IAge, Age>();
             services.AddSingleton<IPerson, Person>();
+            
+            services.AddMvc()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = context =>
+                    {
+                        var problems = new CustomBadRequest(context);
+                        return new BadRequestObjectResult(problems);
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

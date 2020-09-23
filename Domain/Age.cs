@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
+using SkiTickets.Models;
 using SkiTickets.Utils;
-using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Domain
 {
@@ -12,7 +12,7 @@ namespace SkiTickets.Domain
         List<Models.Age> GetAll();
         Models.Age GetAgeById(int id);
         Models.Age DeleteAge(int id);
-        Models.Age UpdateAge(int id, Models.Age ageDao);
+        Models.Age UpdateAge(int id, AgeDto ageDto);
     }
     
     public class Age : IAge
@@ -41,14 +41,14 @@ namespace SkiTickets.Domain
 
             return age;
         }
-        public Models.Age UpdateAge(int id, Models.Age ageDao)
+        public Models.Age UpdateAge(int id, AgeDto ageDto)
         {
             var newAge = new Models.Age()
             {
                 Id = id,
-                Type = ageDao.Type,
-                MinYears = ageDao.MinYears,
-                MaxYears = ageDao.MaxYears
+                Type = ageDto.Type,
+                MinYears = ageDto.MinYears,
+                MaxYears = ageDto.MaxYears
             };
 
             const string sql =
