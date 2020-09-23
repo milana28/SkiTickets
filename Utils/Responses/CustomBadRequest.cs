@@ -40,7 +40,7 @@ namespace SkiTickets.Utils.Responses
             }
         }
 
-        static string GetErrorMessage(ModelError error)
+        private static string GetErrorMessage(ModelError error)
         {
             return string.IsNullOrEmpty(error.ErrorMessage) ? "error" :
             error.ErrorMessage;
