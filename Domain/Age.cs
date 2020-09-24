@@ -26,12 +26,16 @@ namespace SkiTickets.Domain
         
          public List<Models.Age> GetAll()
         {
-            return _database.Query<Models.Age>("SELECT * FROM SkiTickets.Age").ToList();
+            var ageList = new List<Models.Age>();
+            var ageDaoList = _database.Query<AgeDao>("SELECT * FROM SkiTickets.Age").ToList();
+            ageDaoList.ForEach(a => ageList.Add(TransformDaoToBusinessLogicAge(a)));
+
+            return ageList;
         }
         public Models.Age GetAgeById(int id)
         {
             const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @ageId";
-            return _database.QueryFirstOrDefault<Models.Age>(sql, new {ageId = id});
+            return TransformDaoToBusinessLogicAge(_database.QueryFirstOrDefault<AgeDao>(sql, new {ageId = id}));
         }
         public Models.Age DeleteAge(int id)
         {
@@ -56,6 +60,16 @@ namespace SkiTickets.Domain
             _database.Execute(sql, newAge);
 
             return GetAgeById(id);
+        }
+        private static Models.Age TransformDaoToBusinessLogicAge(AgeDao ageDao)
+        {
+            return new Models.Age()
+            {
+                Id = ageDao.Id,
+                Type = ageDao.Type,
+                MinYears = ageDao.MinYears,
+                MaxYears = ageDao.MaxYears
+            };
         }
     }
 }
