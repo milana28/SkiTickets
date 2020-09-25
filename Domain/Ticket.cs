@@ -12,6 +12,7 @@ namespace SkiTickets.Domain
         Models.Ticket CreateTicket(TicketDto ticketDto);
         Models.Ticket GetTicketById(int id);
         List<Models.Ticket> GetAll();
+        Models.Ticket UpdateTicket(int id, TicketDto ticketDto);
     }
     
     public class Ticket : ITicket
@@ -52,6 +53,22 @@ namespace SkiTickets.Domain
             const string sql = "SELECT * FROM SkiTickets.Ticket WHERE id = @ticketId";
             return TransformDaoToBusinessLogicTicket(
                 _database.QueryFirstOrDefault<TicketDao>(sql, new {ticketId = id}));
+        }
+        public Models.Ticket UpdateTicket(int id, TicketDto ticketDto)
+        {
+            var ticketTypeId = _ticketType.GetTicketTypeByTypeAndAge(ticketDto.TicketType, ticketDto.Age).Id;
+            
+            const string sql =
+                "UPDATE SkiTickets.Ticket SET ticketTypeId = @ticketTypeId, price = @price, fromDate = @fromDate, toDate = @toDate WHERE id = @id";
+            _database.Execute(sql, new
+            {
+                ticketTypeId = ticketTypeId,
+                price = ticketDto.Price,
+                fromDate = ticketDto.FromDate,
+                toDate = ticketDto.ToDate
+            });
+
+            return GetTicketById(id);
         }
         private Models.Ticket TransformDaoToBusinessLogicTicket(TicketDao ticketDao)
         {
