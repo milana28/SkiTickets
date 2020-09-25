@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
+using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
 
@@ -17,6 +18,24 @@ namespace SkiTickets.Controllers
         public TicketController(ITicket ticket)
         {
             _ticket = ticket;
+        }
+
+        [HttpPost]
+        [TicketTypeValidFilter]
+        [AgeValidFilter]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Models.Ticket> CreateTicket(TicketDto ticketDto)
+        {
+            // try
+            // {
+            //     return Created("https://localhost:5001/Ticket", _ticket.CreateTicket(ticketDto));
+            // }
+            // catch (Exception e)
+            // {
+            //     return BadRequest();
+            // }
+            return _ticket.CreateTicket(ticketDto);
         }
 
         [HttpGet]

@@ -27,11 +27,17 @@ namespace SkiTickets.Domain
 
         public Models.Ticket CreateTicket(TicketDto ticketDto)
         {
-            var ticketTypeId = _ticketType.GetTicketTypeByType(ticketDto.TicketType);
+            var ticketType = _ticketType.GetTicketTypeByTypeAndAge(ticketDto.TicketType, ticketDto.Age);
             const string sql =
                 "INSERT INTO SkiTickets.Ticket VALUES (@ticketTypeId, @price, @fromDate, @toDate) SELECT * FROM SkiTickets.Ticket WHERE id = SCOPE_IDENTITY()";
 
-            return TransformDaoToBusinessLogicTicket(_database.QueryFirstOrDefault<TicketDao>(sql, new {ticketTypeId = ticketTypeId}));
+            return TransformDaoToBusinessLogicTicket(_database.QueryFirstOrDefault<TicketDao>(sql, new
+            {
+                ticketTypeId = ticketType.Id,
+                price = ticketDto.Price,
+                fromDate = ticketDto.FromDate,
+                toDate = ticketDto.ToDate
+            }));
         }
         public List<Models.Ticket> GetAll()
         {

@@ -109,6 +109,10 @@ namespace SkiTickets.Controllers
             {
                 return NotFound(e.Message);
             }
+            catch (AgeNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
             catch (Exception e)
             {
                 return BadRequest();

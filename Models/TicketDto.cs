@@ -6,6 +6,7 @@ namespace SkiTickets.Models
     {
         public int Id { set; get; }
         public string TicketType { set; get; }
+        public string Age { set; get; }
         public float Price { set; get; }
         public DateTime FromDate { set; get; }
         public DateTime ToDate { set; get; }

@@ -35,8 +35,12 @@ namespace SkiTickets.Domain
             const string sql =
                 "INSERT INTO SkiTickets.Person VALUES (@tycketTypeId, @lastName, @ageId) SELECT * FROM SkiTickets.Person WHERE id = SCOPE_IDENTITY()";
 
-            return TransformDaoToBusinessLogicPerson(_database.QueryFirst<PersonDao>(sql, 
-                new {firstName = personDto.FirstName, lastName = personDto.LastName, ageId = ageId}));
+            return TransformDaoToBusinessLogicPerson(_database.QueryFirst<PersonDao>(sql, new
+            {
+                firstName = personDto.FirstName, 
+                lastName = personDto.LastName, 
+                ageId = ageId
+            }));
         }
         public List<Models.Person> GetAll()
         {
@@ -62,17 +66,16 @@ namespace SkiTickets.Domain
         public Models.Person UpdatePerson(int id, PersonDto personDto)
         {
             var ageId = _age.GetAgeByType(personDto.Age).Id;
-
-            var personDao = new PersonDao()
-            {
-                FirstName = personDto.FirstName,
-                LastName = personDto.LastName,
-                AgeId = ageId
-            };
-
+            
             const string sql =
                 "UPDATE SkiTickets.Person SET firstName = @firstName, lastName = @lastName, ageId = @ageId WHERE id = @id";
-            _database.Execute(sql, personDao);
+            _database.Execute(sql, new
+            {
+                firstName = personDto.FirstName,
+                lastName = personDto.LastName,
+                ageId = ageId,
+                id = id
+            });
 
             return GetPersonById(id);
         }
