@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
 using SkiTickets.Utils.Exceptions;
+using SkiTickets.Utils.Filters;
 
 namespace SkiTickets.Controllers
 {
@@ -34,6 +35,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpGet("{id}")]
+        [TicketExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
