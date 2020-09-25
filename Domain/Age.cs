@@ -13,6 +13,7 @@ namespace SkiTickets.Domain
         Models.Age GetAgeById(int id);
         Models.Age DeleteAge(int id);
         Models.Age UpdateAge(int id, AgeDto ageDto);
+        Models.Age GetAgeByType(string type);
     }
     
     public class Age : IAge
@@ -36,6 +37,11 @@ namespace SkiTickets.Domain
         {
             const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @ageId";
             return TransformDaoToBusinessLogicAge(_database.QueryFirstOrDefault<AgeDao>(sql, new {ageId = id}));
+        }
+        public Models.Age GetAgeByType(string type)
+        {
+            const string sql = "SELECT * FROM SkiTickets.Age WHERE type = @ageType";
+            return TransformDaoToBusinessLogicAge(_database.QueryFirstOrDefault<AgeDao>(sql, new {ageType = type}));
         }
         public Models.Age DeleteAge(int id)
         {

@@ -20,25 +20,23 @@ namespace SkiTickets.Domain
     public class Person : IPerson
     {
         private readonly IDbConnection _database;
+        private readonly IAge _age;
 
-        public Person(IDatabase database)
+        public Person(IDatabase database, IAge age)
         {
             _database = database.Get();
+            _age = age;
         }
 
         public Models.Person CreatePerson(PersonDto personDto)
         {
-            var person = new PersonDao()
-            {
-                FirstName = personDto.FirstName,
-                LastName = personDto.LastName,
-                AgeId = personDto.AgeId
-            };
+            var ageId = _age.GetAgeByType(personDto.Age).Id;
 
             const string sql =
-                "INSERT INTO SkiTickets.Person VALUES (@firstName, @lastName, @ageId) SELECT * FROM SkiTickets.Person WHERE id = SCOPE_IDENTITY()";
+                "INSERT INTO SkiTickets.Person VALUES (@tycketTypeId, @lastName, @ageId) SELECT * FROM SkiTickets.Person WHERE id = SCOPE_IDENTITY()";
 
-            return TransformDaoToBusinessLogicPerson(_database.QueryFirst<PersonDao>(sql, person));
+            return TransformDaoToBusinessLogicPerson(_database.QueryFirst<PersonDao>(sql, 
+                new {firstName = personDto.FirstName, lastName = personDto.LastName, ageId = ageId}));
         }
         public List<Models.Person> GetAll()
         {
@@ -63,17 +61,18 @@ namespace SkiTickets.Domain
         }
         public Models.Person UpdatePerson(int id, PersonDto personDto)
         {
-            var newPerson = new PersonDao()
+            var ageId = _age.GetAgeByType(personDto.Age).Id;
+
+            var personDao = new PersonDao()
             {
-                Id = id,
                 FirstName = personDto.FirstName,
                 LastName = personDto.LastName,
-                AgeId = personDto.AgeId
+                AgeId = ageId
             };
 
             const string sql =
                 "UPDATE SkiTickets.Person SET firstName = @firstName, lastName = @lastName, ageId = @ageId WHERE id = @id";
-            _database.Execute(sql, newPerson);
+            _database.Execute(sql, personDao);
 
             return GetPersonById(id);
         }

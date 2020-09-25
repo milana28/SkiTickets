@@ -11,6 +11,7 @@ namespace SkiTickets.Domain
     {
         List<Models.SellingPoint> GetAll();
         Models.SellingPoint GetSellingPointById(int id);
+        Models.SellingPoint CreateSellingPoint(SellingPointDto sellingPointDto);
     }
     
     public class SellingPoint : ISellingPoint
@@ -21,7 +22,15 @@ namespace SkiTickets.Domain
         {
             _database = database.Get();
         }
-        
+
+        public Models.SellingPoint CreateSellingPoint(SellingPointDto sellingPointDto)
+        {
+            const string sql =
+                "INSERT INTO SkiTickets.SellingPoint VALUES (@name, @location) SELECT * FROM SkiTickets.SellingPoint WHERE id = SCOPE_IDENTITY()";
+
+            return TransformDaoToBusinessLogicSellingPoint(_database.QueryFirst<SellingPointDao>(sql, 
+                new {firstName = sellingPointDto.Name, lastName = sellingPointDto.Location}));
+        }
         public List<Models.SellingPoint> GetAll()
         {
             var sellingPointList = new List<Models.SellingPoint>();

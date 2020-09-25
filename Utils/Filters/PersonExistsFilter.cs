@@ -21,7 +21,7 @@ namespace SkiTickets.Utils.Filters
 
             if (person == null)
             {
-                throw new PersonNotFoundException("Person does not exists!");
+                throw new PersonNotFoundException("Person does not exist!");
             }
             
             base.OnActionExecuting(context);

@@ -12,6 +12,6 @@ namespace SkiTickets.Models
         [StringLength(100)]
         public string LastName { set; get; }
         [Required]
-        public int AgeId { set; get; }
+        public string Age { set; get; }
     }
 }

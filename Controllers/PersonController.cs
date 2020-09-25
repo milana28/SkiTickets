@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
 using SkiTickets.Models;
-using SkiTickets.Utils;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
 

@@ -24,7 +24,7 @@ namespace SkiTickets.Utils.Filters
 
             if (age == null)
             {
-                throw new AgeNotFoundException("Age does not exists!");
+                throw new AgeNotFoundException("Age does not exist!");
             }
             
             base.OnActionExecuting(context);

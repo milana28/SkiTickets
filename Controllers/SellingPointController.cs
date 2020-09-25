@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
+using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
 
@@ -17,6 +18,22 @@ namespace SkiTickets.Controllers
         public SellingPointController(ISellingPoint sellingPoint)
         {
             _sellingPoint = sellingPoint;
+        }
+        
+        [HttpPost]
+        [AgeValidFilter]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Models.Person> CreatePerson([FromBody] SellingPointDto sellingPointDto)
+        {
+            try
+            {
+                return Created("https://localhost:5001/Person", _sellingPoint.CreateSellingPoint(sellingPointDto));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
         
         [HttpGet]
@@ -45,7 +62,7 @@ namespace SkiTickets.Controllers
             {
                 return Ok(_sellingPoint.GetSellingPointById(id));
             }
-            catch (AgeNotFoundException e)
+            catch (SellingPointNotFoundException e)
             {
                 return NotFound(e.Message);
             }
