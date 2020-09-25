@@ -27,15 +27,14 @@ namespace SkiTickets.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Models.Ticket> CreateTicket(TicketDto ticketDto)
         {
-            // try
-            // {
-            //     return Created("https://localhost:5001/Ticket", _ticket.CreateTicket(ticketDto));
-            // }
-            // catch (Exception e)
-            // {
-            //     return BadRequest();
-            // }
-            return _ticket.CreateTicket(ticketDto);
+            try
+            {
+                return Created("https://localhost:5001/Ticket", _ticket.CreateTicket(ticketDto));
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]
