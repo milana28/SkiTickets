@@ -14,17 +14,20 @@ namespace SkiTickets.Domain
         List<Models.Ticket> GetAll();
         Models.Ticket DeleteTicket(int id);
         Models.Ticket UpdateTicket(int id, TicketDto ticketDto);
+        List<Models.Ticket> GetTicketsByAge(string age);
     }
     
     public class Ticket : ITicket
     {
         private readonly IDbConnection _database;
         private readonly ITicketType _ticketType;
+        private readonly IAge _age;
 
-        public Ticket(IDatabase database, ITicketType ticketType)
+        public Ticket(IDatabase database, ITicketType ticketType, IAge age)
         {
             _database = database.Get();
             _ticketType = ticketType;
+            _age = age;
         }
 
         public Models.Ticket CreateTicket(TicketDto ticketDto)
@@ -54,6 +57,18 @@ namespace SkiTickets.Domain
             const string sql = "SELECT * FROM SkiTickets.Ticket WHERE id = @ticketId";
             return TransformDaoToBusinessLogicTicket(
                 _database.QueryFirstOrDefault<TicketDao>(sql, new {ticketId = id}));
+        }
+        
+        public List<Models.Ticket> GetTicketsByAge(string age)
+        {
+            var ageId = _age.GetAgeByType(age).Id;
+            var ticketList = new List<Models.Ticket>();
+            const string sql = 
+                "SELECT t.ticketTypeId, t.price, t.fromDate, t.toDate FROM SkiTickets.Ticket as t LEFT JOIN SkiTickets.TicketType as tt ON t.ticketTypeId = tt.id WHERE tt.ageId = @ageId";
+            var ticketDaoList = _database.Query<TicketDao>(sql, new {ageId = ageId}).ToList();
+            ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
+
+            return ticketList;
         }
         public Models.Ticket DeleteTicket(int id)
         {

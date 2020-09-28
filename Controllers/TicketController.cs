@@ -40,10 +40,14 @@ namespace SkiTickets.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<List<Models.Ticket>> GetAll()
+        public ActionResult<List<Models.Ticket>> GetTickets([FromQuery(Name = "age")] string? age)
         {
             try
             {
+                if (age != null)
+                {
+                    return _ticket.GetTicketsByAge(age);
+                }
                 return Ok(_ticket.GetAll());
             }
             catch (Exception e)
