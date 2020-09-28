@@ -12,6 +12,7 @@ namespace SkiTickets.Utils.Filters
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
         private PersonDto _person = new PersonDto();
+        public object info;
         
         public override void OnActionExecuting(ActionExecutingContext context)
         {

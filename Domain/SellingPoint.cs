@@ -12,6 +12,8 @@ namespace SkiTickets.Domain
         List<Models.SellingPoint> GetAll();
         Models.SellingPoint GetSellingPointById(int id);
         Models.SellingPoint CreateSellingPoint(SellingPointDto sellingPointDto);
+        Models.SellingPoint DeleteSellingPoint(int id);
+        Models.SellingPoint UpdateSellingPoint(int id, SellingPointDto sellingPointDto);
     }
     
     public class SellingPoint : ISellingPoint
@@ -51,6 +53,18 @@ namespace SkiTickets.Domain
             _database.Execute(sql, new {sellingPointId = id});
 
             return sellingPoint;
+        }
+        public Models.SellingPoint UpdateSellingPoint(int id, SellingPointDto sellingPointDto)
+        {
+            const string sql =
+                "UPDATE SkiTickets.SellingPoint SET name = @name, lcoation = @location WHERE id = @id";
+            _database.Execute(sql, new
+            {
+                name = sellingPointDto.Name,
+                location = sellingPointDto.Location,
+            });
+
+            return GetSellingPointById(id);
         }
         private static Models.SellingPoint TransformDaoToBusinessLogicSellingPoint(SellingPointDao sellingPointDao)
         {

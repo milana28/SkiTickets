@@ -72,5 +72,52 @@ namespace SkiTickets.Controllers
                 return BadRequest();
             }
         }
+        
+        [HttpDelete("{id}")]
+        [TicketExistsFilter]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Models.Ticket> DeletePerson(int id)
+        {
+            try
+            {
+                return Ok(_ticket.DeleteTicket(id));
+            }
+            catch (TicketNotFound e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpPut("{id}")]
+        [TicketExistsFilter]
+        [AgeValidFilter(info = typeof(PersonDto))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Models.Ticket> UpdatePerson(int id, TicketDto ticketDto)
+        {
+            try
+            {
+                return Ok(_ticket.UpdateTicket(id, ticketDto));
+            }
+            catch (TicketNotFound e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (AgeNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

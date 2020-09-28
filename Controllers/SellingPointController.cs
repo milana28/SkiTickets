@@ -71,5 +71,47 @@ namespace SkiTickets.Controllers
                 return BadRequest(e.Message);
             }
         }
+        
+        [HttpDelete("{id}")]
+        [PersonExistsFilter]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Models.SellingPoint> DeleteSellingPoint(int id)
+        {
+            try
+            {
+                return Ok(_sellingPoint.DeleteSellingPoint(id));
+            }
+            catch (SellingPointNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
+        [HttpPut("{id}")]
+        [SellingPointExistsFilter]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Models.SellingPoint> UpdateSellingPoint(int id, SellingPointDto sellingPointDto)
+        {
+            try
+            {
+                return Ok(_sellingPoint.UpdateSellingPoint(id, sellingPointDto));
+            }
+            catch (SellingPointNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
     }
 }

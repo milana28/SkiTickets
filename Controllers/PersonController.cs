@@ -95,7 +95,7 @@ namespace SkiTickets.Controllers
         
         [HttpPut("{id}")]
         [PersonExistsFilter]
-        [AgeValidFilter]
+        [AgeValidFilter(info = typeof(PersonDto))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

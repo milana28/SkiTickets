@@ -9,6 +9,7 @@ namespace SkiTickets.Domain
 {
     public interface IAge
     {
+        Models.Age CreateAge(AgeDto ageDto);
         List<Models.Age> GetAll();
         Models.Age GetAgeById(int id);
         Models.Age DeleteAge(int id);
@@ -25,7 +26,19 @@ namespace SkiTickets.Domain
             _database = database.Get();
         }
         
-         public List<Models.Age> GetAll()
+        public Models.Age CreateAge(AgeDto ageDto)
+        {
+            const string sql =
+                "INSERT INTO SkiTickets.Age VALUES (@type, @minYears, @maxYears) SELECT * FROM SkiTickets.Age WHERE id = SCOPE_IDENTITY()";
+
+            return TransformDaoToBusinessLogicAge(_database.QueryFirst<AgeDao>(sql, new
+            {
+                type = ageDto.Type, 
+                minYears = ageDto.MinYears, 
+                maxYears = ageDto.MaxYears
+            }));
+        }
+        public List<Models.Age> GetAll()
         {
             var ageList = new List<Models.Age>();
             var ageDaoList = _database.Query<AgeDao>("SELECT * FROM SkiTickets.Age").ToList();

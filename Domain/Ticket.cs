@@ -12,6 +12,7 @@ namespace SkiTickets.Domain
         Models.Ticket CreateTicket(TicketDto ticketDto);
         Models.Ticket GetTicketById(int id);
         List<Models.Ticket> GetAll();
+        Models.Ticket DeleteTicket(int id);
         Models.Ticket UpdateTicket(int id, TicketDto ticketDto);
     }
     
@@ -53,6 +54,14 @@ namespace SkiTickets.Domain
             const string sql = "SELECT * FROM SkiTickets.Ticket WHERE id = @ticketId";
             return TransformDaoToBusinessLogicTicket(
                 _database.QueryFirstOrDefault<TicketDao>(sql, new {ticketId = id}));
+        }
+        public Models.Ticket DeleteTicket(int id)
+        {
+            var ticket = GetTicketById(id);
+            const string sql = "DELETE FROM SkiTickets.Ticket WHERE id = @ticketId";
+            _database.Execute(sql, new {ticketId = id});
+
+            return ticket;
         }
         public Models.Ticket UpdateTicket(int id, TicketDto ticketDto)
         {

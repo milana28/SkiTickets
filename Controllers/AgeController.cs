@@ -19,6 +19,21 @@ namespace SkiTickets.Controllers
         {
             _age = age;
         }
+        
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Models.Age> CreateTicket(AgeDto ageDto)
+        {
+            try
+            {
+                return Created("https://localhost:5001/Ticket", _age.CreateAge(ageDto));
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+        }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
