@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace SkiTickets.Domain
         List<Models.Ticket> GetAll();
         Models.Ticket DeleteTicket(int id);
         Models.Ticket UpdateTicket(int id, TicketDto ticketDto);
-        List<Models.Ticket> GetTicketsByAge(string age);
+        List<Models.Ticket> GetTicketsByAge(string? age);
+        List<Models.Ticket> GetTicketsWithinDate(DateTime? fromDate, DateTime? toDate);
     }
     
     public class Ticket : ITicket
@@ -52,14 +54,7 @@ namespace SkiTickets.Domain
 
             return ticketList;
         }
-        public Models.Ticket GetTicketById(int id)
-        {
-            const string sql = "SELECT * FROM SkiTickets.Ticket WHERE id = @ticketId";
-            return TransformDaoToBusinessLogicTicket(
-                _database.QueryFirstOrDefault<TicketDao>(sql, new {ticketId = id}));
-        }
-        
-        public List<Models.Ticket> GetTicketsByAge(string age)
+        public List<Models.Ticket> GetTicketsByAge(string? age)
         {
             var ageId = _age.GetAgeByType(age).Id;
             var ticketList = new List<Models.Ticket>();
@@ -69,6 +64,22 @@ namespace SkiTickets.Domain
             ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
 
             return ticketList;
+        }
+        public List<Models.Ticket> GetTicketsWithinDate(DateTime? fromDate, DateTime? toDate)
+        {
+            var ticketList = new List<Models.Ticket>();
+            const string sql = 
+                "SELECT * FROM SkiTickets.Ticket WHERE fromDate >= @fromDate AND toDate <= @toDate";
+            var ticketDaoList = _database.Query<TicketDao>(sql, new {fromDate = fromDate, toDate = toDate}).ToList();
+            ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
+
+            return ticketList;
+        }
+        public Models.Ticket GetTicketById(int id)
+        {
+            const string sql = "SELECT * FROM SkiTickets.Ticket WHERE id = @ticketId";
+            return TransformDaoToBusinessLogicTicket(
+                _database.QueryFirstOrDefault<TicketDao>(sql, new {ticketId = id}));
         }
         public Models.Ticket DeleteTicket(int id)
         {

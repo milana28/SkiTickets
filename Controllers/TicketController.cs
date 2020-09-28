@@ -40,13 +40,18 @@ namespace SkiTickets.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<List<Models.Ticket>> GetTickets([FromQuery(Name = "age")] string? age)
+        public ActionResult<List<Models.Ticket>> GetTickets([FromQuery(Name = "age")] string? age, 
+            [FromQuery(Name = "from")] DateTime? fromDate, [FromQuery(Name = "to")] DateTime? toDate)
         {
             try
             {
                 if (age != null)
                 {
                     return _ticket.GetTicketsByAge(age);
+                }
+                if (fromDate != null && toDate != null)
+                {
+                    return _ticket.GetTicketsWithinDate(fromDate, toDate);
                 }
                 return Ok(_ticket.GetAll());
             }
