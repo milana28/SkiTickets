@@ -14,6 +14,7 @@ namespace SkiTickets.Domain
         List<Models.TicketPurchase> GetAll();
         Models.TicketPurchase GetTicketPurchaseById(int id);
         List<Models.TicketPurchase> GetTicketPurchasesByTicketType(string type);
+        List<Models.TicketPurchase> GetTicketPurchasesBySellingPoint(int sellingPointId);
     }
     
     public class TicketPurchase : ITicketPurchase
@@ -80,10 +81,11 @@ namespace SkiTickets.Domain
             return TransformDaoToBusinessLogicTicketPurchase(
                 _database.QueryFirstOrDefault<TicketPurchaseDao>(sql, new {ticketPurchaseId = id}));
         }
-        public List<Models.TicketPurchase> GetTicketPurchasesBySellingPoint()
+        public List<Models.TicketPurchase> GetTicketPurchasesBySellingPoint(int sellingPointId)
         {
             var ticketPurchaseList = new List<Models.TicketPurchase>();
-            var ticketPurchaseDaoList = _database.Query<TicketPurchaseDao>("SELECT * FROM SkiTickets.TicketPurchase").ToList();
+            const string sql = "SELECT * FROM SkiTickets.TicketPurchase WHERE sellingPointId = @id";
+            var ticketPurchaseDaoList = _database.Query<TicketPurchaseDao>(sql, new {id = sellingPointId}).ToList();
             ticketPurchaseDaoList.ForEach(t => ticketPurchaseList.Add(TransformDaoToBusinessLogicTicketPurchase(t)));
 
             return ticketPurchaseList;

@@ -90,5 +90,21 @@ namespace SkiTickets.Controllers
                 return BadRequest();
             }
         }
+        
+        [HttpGet("sellingPoint/{sellingPointId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<Models.TicketPurchase>> GetTicketPurchasesBySellingPoint(int sellingPointId)
+        {
+            try
+            {
+                return Ok(_ticketPurchase.GetTicketPurchasesBySellingPoint(sellingPointId));
+            }
+            catch(Exception e)
+            {
+                return BadRequest();
+            }
+        }
     }
 }
