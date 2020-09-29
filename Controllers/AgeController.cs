@@ -27,7 +27,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Created("https://localhost:5001/Ticket", _age.CreateAge(ageDto));
+                return Created("https://localhost:5001/Age", _age.CreateAge(ageDto));
             }
             catch (Exception e)
             {

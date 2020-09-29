@@ -46,11 +46,11 @@ CREATE TABLE SkiTickets.TicketPurchase (
 id INT PRIMARY KEY IDENTITY,
 ticketId INT NOT NULL,
 personId INT NOT NULL,
-placeId INT NOT NULL,
+sellingPointId INT NOT NULL,
 date DATETIME NOT NULL,
 FOREIGN KEY (ticketId) REFERENCES SkiTickets.Ticket(id),
 FOREIGN KEY (personId) REFERENCES SkiTickets.Person(id) ON DELETE CASCADE,
-FOREIGN KEY (placeId) REFERENCES SkiTickets.SellingPoint(id) ON DELETE CASCADE
+FOREIGN KEY (sellingPointId) REFERENCES SkiTickets.SellingPoint(id) ON DELETE CASCADE
 );
 
 INSERT INTO SkiTickets.Age (type, minYears, maxYears) VALUES ('child', 6, 11), ('adult', 12, 64);

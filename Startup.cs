@@ -30,6 +30,7 @@ namespace SkiTickets
             services.AddSingleton<ISellingPoint, SellingPoint>();
             services.AddSingleton<ITicketType, TicketType>();
             services.AddSingleton<ITicket, Ticket>();
+            services.AddSingleton<ITicketPurchase, TicketPurchase>();
             
             services.AddMvc()
                 .ConfigureApiBehaviorOptions(options =>

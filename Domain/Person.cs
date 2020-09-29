@@ -13,7 +13,7 @@ namespace SkiTickets.Domain
         Models.Person GetPersonById(int id);
         Models.Person CreatePerson(PersonDto personDto);
         Models.Person DeletePerson(int id);
-        Models.Person TransformDaoToBusinessLogicPerson(PersonDao personDao);
+        Models.Person GetPersonByFirstNameLastNameAndAge(string firstName, string lastName, string age);
         Models.Person UpdatePerson(int id, PersonDto personDto);
     }
     
@@ -33,7 +33,7 @@ namespace SkiTickets.Domain
             var ageId = _age.GetAgeByType(personDto.Age).Id;
 
             const string sql =
-                "INSERT INTO SkiTickets.Person VALUES (@tycketTypeId, @lastName, @ageId) SELECT * FROM SkiTickets.Person WHERE id = SCOPE_IDENTITY()";
+                "INSERT INTO SkiTickets.Person VALUES (@firstName, @lastName, @ageId) SELECT * FROM SkiTickets.Person WHERE id = SCOPE_IDENTITY()";
 
             return TransformDaoToBusinessLogicPerson(_database.QueryFirst<PersonDao>(sql, new
             {
@@ -54,6 +54,19 @@ namespace SkiTickets.Domain
         {
             const string sql = "SELECT * FROM SkiTickets.Person WHERE id = @personId";
             return TransformDaoToBusinessLogicPerson(_database.QueryFirstOrDefault<PersonDao>(sql, new {personId = id}));
+        }
+        public Models.Person GetPersonByFirstNameLastNameAndAge(string firstName, string lastName, string age)
+        {
+            var ageId = _age.GetAgeByType(age).Id;
+            const string sql = "SELECT * FROM SkiTickets.Person WHERE firstName = @firstName AND lastName = @lastName AND ageId = @ageId";
+            var personDao = _database.QueryFirstOrDefault<PersonDao>(sql, new
+            {
+                firstName = firstName,
+                lastName = lastName,
+                ageId = ageId
+            });
+
+            return personDao == null ? null : TransformDaoToBusinessLogicPerson(personDao);
         }
         public Models.Person DeletePerson(int id)
         {
@@ -79,7 +92,7 @@ namespace SkiTickets.Domain
 
             return GetPersonById(id);
         }
-        public Models.Person TransformDaoToBusinessLogicPerson(PersonDao personDao)
+        private Models.Person TransformDaoToBusinessLogicPerson(PersonDao personDao)
         {
             const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @ageId";
             var age = _database.QuerySingle<Models.Age>(sql, new {ageId = personDao.AgeId});

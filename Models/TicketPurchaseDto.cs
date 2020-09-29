@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SkiTickets.Models
@@ -9,10 +8,15 @@ namespace SkiTickets.Models
         [Required]
         public int TicketId { set; get; }
         [Required]
-        public int PersonId { set; get; } 
+        [StringLength(200)]
+        public string FirstName { set; get; }
         [Required]
-        public int PlaceId { set; get; }
+        [StringLength(200)]
+        public string LastName { set; get; }
         [Required]
-        public DateTime Date { set; get; }
+        [StringLength(100)]
+        public string Age { set; get; }
+        [Required]
+        public int SellingPointId { set; get; }
     }
 }

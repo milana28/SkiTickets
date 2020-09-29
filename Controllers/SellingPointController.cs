@@ -28,7 +28,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Created("https://localhost:5001/Person", _sellingPoint.CreateSellingPoint(sellingPointDto));
+                return Created("https://localhost:5001/SellingPoint", _sellingPoint.CreateSellingPoint(sellingPointDto));
             }
             catch (Exception e)
             {
