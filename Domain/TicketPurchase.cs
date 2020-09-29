@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Dapper;
 using SkiTickets.Models;
 using SkiTickets.Utils;
@@ -9,6 +11,9 @@ namespace SkiTickets.Domain
     public interface ITicketPurchase
     {
         Models.TicketPurchase CreateTicketPurchase(TicketPurchaseDto ticketPurchaseDto);
+        List<Models.TicketPurchase> GetAll();
+        Models.TicketPurchase GetTicketPurchaseById(int id);
+        List<Models.TicketPurchase> GetTicketPurchasesByTicketType(string type);
     }
     
     public class TicketPurchase : ITicketPurchase
@@ -60,6 +65,38 @@ namespace SkiTickets.Domain
                 sellingPointId = ticketPurchaseDto.SellingPointId,
                 date = DateTime.Now
             }));
+        }
+        public List<Models.TicketPurchase> GetAll()
+        {
+            var ticketPurchaseList = new List<Models.TicketPurchase>();
+            var ticketPurchaseDaoList = _database.Query<TicketPurchaseDao>("SELECT * FROM SkiTickets.TicketPurchase").ToList();
+            ticketPurchaseDaoList.ForEach(t => ticketPurchaseList.Add(TransformDaoToBusinessLogicTicketPurchase(t)));
+
+            return ticketPurchaseList;
+        }
+        public Models.TicketPurchase GetTicketPurchaseById(int id)
+        {
+            const string sql = "SELECT * FROM SkiTickets.TicketPurchase WHERE id = @ticketPurchaseId";
+            return TransformDaoToBusinessLogicTicketPurchase(
+                _database.QueryFirstOrDefault<TicketPurchaseDao>(sql, new {ticketPurchaseId = id}));
+        }
+        public List<Models.TicketPurchase> GetTicketPurchasesBySellingPoint()
+        {
+            var ticketPurchaseList = new List<Models.TicketPurchase>();
+            var ticketPurchaseDaoList = _database.Query<TicketPurchaseDao>("SELECT * FROM SkiTickets.TicketPurchase").ToList();
+            ticketPurchaseDaoList.ForEach(t => ticketPurchaseList.Add(TransformDaoToBusinessLogicTicketPurchase(t)));
+
+            return ticketPurchaseList;
+        }
+        public List<Models.TicketPurchase> GetTicketPurchasesByTicketType(string type)
+        {
+            var ticketPurchaseList = new List<Models.TicketPurchase>();
+            const string sql =
+                "SELECT tp.* FROM SkiTickets.TicketPurchase as tp LEFT JOIN SkiTickets.Ticket as t ON tp.ticketId = t.Id LEFT JOIN SkiTickets.TicketType as tt ON t.ticketTypeId = tt.Id WHERE tt.[type] = @type";
+            var ticketPurchaseDaoList = _database.Query<TicketPurchaseDao>(sql, new {type = type}).ToList();
+            ticketPurchaseDaoList.ForEach(t => ticketPurchaseList.Add(TransformDaoToBusinessLogicTicketPurchase(t)));
+
+            return ticketPurchaseList;
         }
         private Models.TicketPurchase TransformDaoToBusinessLogicTicketPurchase(TicketPurchaseDao ticketPurchaseDao)
         {

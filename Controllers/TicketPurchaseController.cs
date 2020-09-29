@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
@@ -38,6 +39,56 @@ namespace SkiTickets.Controllers
                 return BadRequest();
             }
         }
-
+        
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<List<Models.TicketPurchase>> GetAll()
+        {
+            try
+            {
+                return Ok(_ticketPurchase.GetAll());
+            }
+            catch(Exception e)
+            {
+                return BadRequest();
+            }
+        }
+        [HttpGet("{id}")]
+        [TicketPurchaseExistsFilter]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<Models.TicketPurchase>> GetTicketPurchaseById(int id)
+        {
+            try
+            {
+                return Ok(_ticketPurchase.GetTicketPurchaseById(id));
+            }
+            catch(TicketPurchaseNotFound e)
+            {
+                return NotFound(e.Message);
+            }
+            catch(Exception e)
+            {
+                return BadRequest();
+            }
+        }
+        
+        [HttpGet("ticketType/{type}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<Models.TicketPurchase>> GetTicketPurchasesByTicketType(string type)
+        {
+            try
+            {
+                return Ok(_ticketPurchase.GetTicketPurchasesByTicketType(type));
+            }
+            catch(Exception e)
+            {
+                return BadRequest();
+            }
+        }
     }
 }
