@@ -50,7 +50,7 @@ namespace SkiTickets.Controllers
             {
                 if (!_cache.TryGetValue("Tickets", out List<Models.Ticket> tickets))
                 {
-                    _cache.Set("Tickets", tickets, TimeSpan.FromSeconds(5));
+                    _cache.Set("Tickets", tickets, TimeSpan.FromSeconds(10));
                 }
                 if (age != null)
                 {
