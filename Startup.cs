@@ -24,6 +24,7 @@ namespace SkiTickets
         {
             services.AddControllers();
             services.AddSwaggerGen();
+            services.AddMemoryCache();
             services.AddSingleton<IDatabase, Database>();
             services.AddSingleton<IAge, Age>();
             services.AddSingleton<IPerson, Person>();

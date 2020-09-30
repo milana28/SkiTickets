@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using SkiTickets.Domain;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
@@ -14,10 +15,12 @@ namespace SkiTickets.Controllers
     public class TicketController : ControllerBase
     {
         private readonly ITicket _ticket;
+        private readonly IMemoryCache _cache;
 
-        public TicketController(ITicket ticket)
+        public TicketController(ITicket ticket, IMemoryCache cache)
         {
             _ticket = ticket;
+            _cache = cache;
         }
 
         [HttpPost]
@@ -45,6 +48,10 @@ namespace SkiTickets.Controllers
         {
             try
             {
+                if (!_cache.TryGetValue("Tickets", out List<Models.Ticket> tickets))
+                {
+                    _cache.Set("Tickets", tickets, TimeSpan.FromSeconds(5));
+                }
                 if (age != null)
                 {
                     return _ticket.GetTicketsByAge(age);
