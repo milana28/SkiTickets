@@ -35,11 +35,11 @@ namespace SkiTickets.Controllers
             }
             catch (NoCapacity e)
             {
-                return Forbid();
+                return BadRequest();
             }
             catch (AgesNotMatchingException e)
             {
-                return Forbid();
+                return BadRequest();
             }
             catch (Exception e)
             {
