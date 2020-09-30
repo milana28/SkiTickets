@@ -23,7 +23,7 @@ namespace SkiTickets.Domain
         private readonly IPerson _person;
         private readonly ITicket _ticket;
         private readonly ISellingPoint _sellingPoint;
-      
+
         public TicketPurchase(IDatabase database, IPerson person, ITicket ticket, ISellingPoint sellingPoint)
         {
             _database = database.Get();

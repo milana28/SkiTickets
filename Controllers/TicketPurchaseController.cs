@@ -14,13 +14,16 @@ namespace SkiTickets.Controllers
     public class TicketPurchaseController : ControllerBase
     {
         private readonly ITicketPurchase _ticketPurchase;
+        private readonly ITicketUsed _ticketUsed;
 
-        public TicketPurchaseController(ITicketPurchase ticketPurchase)
+        public TicketPurchaseController(ITicketPurchase ticketPurchase, ITicketUsed ticketUsed)
         {
             _ticketPurchase = ticketPurchase;
+            _ticketUsed = ticketUsed;
         }
         
         [HttpPost]
+        [CheckCapacity]
         [AgesMatchingFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -30,9 +33,33 @@ namespace SkiTickets.Controllers
             {
                 return Created("https://localhost:5001/TicketPurchase", _ticketPurchase.CreateTicketPurchase(ticketPurchaseDto));
             }
+            catch (NoCapacity e)
+            {
+                return Forbid();
+            }
             catch (AgesNotMatchingException e)
             {
+                return Forbid();
+            }
+            catch (Exception e)
+            {
                 return BadRequest();
+            }
+        }
+        
+        [HttpPost("{id}/check")]
+        [TicketPurchaseExistsFilter]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Models.TicketUsed> CheckTicket(int id)
+        {
+            try
+            {
+                return Created("https://localhost:5001/TicketPurchase/{id}/check", _ticketUsed.CheckTicket(id));
+            }
+            catch (TicketPurchaseNotFound e)
+            {
+                return NotFound();
             }
             catch (Exception e)
             {

@@ -53,6 +53,13 @@ FOREIGN KEY (personId) REFERENCES SkiTickets.Person(id) ON DELETE CASCADE,
 FOREIGN KEY (sellingPointId) REFERENCES SkiTickets.SellingPoint(id) ON DELETE CASCADE
 );
 
+CREATE TABLE SkiTickets.TicketUsed (
+id INT PRIMARY KEY IDENTITY,
+ticketPurchaseId INT NOT NULL,
+time DATETIME NOT NULL,
+FOREIGN KEY (ticketPurchaseId) REFERENCES SkiTickets.TicketPurchase(id) ON DELETE CASCADE,
+);
+
 INSERT INTO SkiTickets.Age (type, minYears, maxYears) VALUES ('child', 6, 11), ('adult', 12, 64);
 
 INSERT INTO SkiTickets.Age (type, minYears) VALUES ('senior', 65);
