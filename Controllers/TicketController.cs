@@ -7,7 +7,6 @@ using SkiTickets.Domain;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
-using SkiTickets.Utils.Responses;
 
 namespace SkiTickets.Controllers
 {
@@ -61,7 +60,7 @@ namespace SkiTickets.Controllers
                 {
                     return _ticket.GetTicketsWithinDate(fromDate, toDate);
                 }
-                return Ok(_ticket.GetAll());
+                return Ok(new Response<List<Models.Ticket>>((_ticket.GetAll())));
             }
             catch (Exception e)
             {
