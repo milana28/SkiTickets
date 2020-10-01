@@ -33,6 +33,7 @@ namespace SkiTickets
             services.AddSingleton<ITicket, Ticket>();
             services.AddSingleton<ITicketPurchase, TicketPurchase>();
             services.AddSingleton<ITicketUsed, TicketUsed>();
+            services.AddSingleton<IStatistic, Statistic>();
             
             services.AddMvc()
                 .ConfigureApiBehaviorOptions(options =>
