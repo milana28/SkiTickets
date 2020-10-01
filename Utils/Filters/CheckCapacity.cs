@@ -17,9 +17,10 @@ namespace SkiTickets.Utils.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             using IDbConnection database = new SqlConnection(MyConnectionString);
-            var today = DateTime.Today;
-            const string sql = "SELECT * FROM SkiTickets.TicketUsed WHERE time <= @now AND time >= @today";
-            var ticketsUsedDao = database.Query<TicketUsedDao>(sql, new {now = DateTime.Now, today = today }).ToList();
+            var now = DateTime.Now;
+            var twoHoursAgo = now.AddHours(-2);
+            const string sql = "SELECT * FROM SkiTickets.TicketUsed WHERE time <= @now AND time >= @twoHoursAgo";
+            var ticketsUsedDao = database.Query<TicketUsedDao>(sql, new {now = DateTime.Now, twoHoursAgo = twoHoursAgo }).ToList();
 
             if (ticketsUsedDao.Count >= 1000)
             {

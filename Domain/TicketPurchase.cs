@@ -37,7 +37,7 @@ namespace SkiTickets.Domain
             var person = _person.GetPersonByFirstNameLastNameAndAge(ticketPurchaseDto.FirstName,
                 ticketPurchaseDto.LastName, ticketPurchaseDto.Age);
             var personId = new int();
-
+          
             if (person == null)
             {
                 var personDto = new PersonDto()
