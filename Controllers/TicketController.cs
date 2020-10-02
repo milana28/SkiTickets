@@ -7,6 +7,7 @@ using SkiTickets.Domain;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
+using SkiTickets.Utils.Responses;
 using Ticket = SkiTickets.Domain.Ticket;
 
 namespace SkiTickets.Controllers
@@ -44,24 +45,24 @@ namespace SkiTickets.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Response<List<Ticket>>> GetTickets([FromQuery(Name = "age")] string? age, 
+        public ActionResult<PaginationResponse<List<Ticket>>> GetTickets([FromQuery(Name = "age")] string? age, 
             [FromQuery(Name = "from")] DateTime? fromDate, [FromQuery(Name = "to")] DateTime? toDate)
         {
             try
             {
                 if (!_cache.TryGetValue("Tickets", out List<Models.Ticket> tickets))
                 {
-                    _cache.Set("Tickets", tickets, TimeSpan.FromSeconds(60));
+                    _cache.Set("Tickets", tickets, TimeSpan.FromSeconds(600));
                 }
                 if (age != null)
                 {
-                    return Ok(new Response<Models.Ticket>((_ticket.GetTicketsByAge(age))));
+                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsByAge(age)), null));
                 }
                 if (fromDate != null && toDate != null)
                 {
-                    return Ok(new Response<Models.Ticket>((_ticket.GetTicketsWithinDate(fromDate, toDate))));
+                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsWithinDate(fromDate, toDate)), null));
                 }
-                return Ok(new Response<Models.Ticket>((_ticket.GetAll())));
+                return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetAll()), null));
             }
             catch (Exception e)
             {
