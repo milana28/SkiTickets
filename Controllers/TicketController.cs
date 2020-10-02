@@ -7,6 +7,7 @@ using SkiTickets.Domain;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
+using Ticket = SkiTickets.Domain.Ticket;
 
 namespace SkiTickets.Controllers
 {
@@ -43,7 +44,7 @@ namespace SkiTickets.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<List<Models.Ticket>> GetTickets([FromQuery(Name = "age")] string? age, 
+        public ActionResult<Response<List<Ticket>>> GetTickets([FromQuery(Name = "age")] string? age, 
             [FromQuery(Name = "from")] DateTime? fromDate, [FromQuery(Name = "to")] DateTime? toDate)
         {
             try
@@ -54,13 +55,13 @@ namespace SkiTickets.Controllers
                 }
                 if (age != null)
                 {
-                    return _ticket.GetTicketsByAge(age);
+                    return Ok(new Response<Models.Ticket>((_ticket.GetTicketsByAge(age))));
                 }
                 if (fromDate != null && toDate != null)
                 {
-                    return _ticket.GetTicketsWithinDate(fromDate, toDate);
+                    return Ok(new Response<Models.Ticket>((_ticket.GetTicketsWithinDate(fromDate, toDate))));
                 }
-                return Ok(new Response<List<Models.Ticket>>((_ticket.GetAll())));
+                return Ok(new Response<Models.Ticket>((_ticket.GetAll())));
             }
             catch (Exception e)
             {
