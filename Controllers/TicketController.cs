@@ -46,7 +46,7 @@ namespace SkiTickets.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<PaginationResponse<List<Ticket>>> GetTickets([FromQuery(Name = "age")] string? age, 
-            [FromQuery(Name = "from")] DateTime? fromDate, [FromQuery(Name = "to")] DateTime? toDate)
+            [FromQuery(Name = "from")] DateTime? fromDate, [FromQuery(Name = "to")] DateTime? toDate, [FromQuery(Name = "page")] int? page)
         {
             try
             {
@@ -56,13 +56,13 @@ namespace SkiTickets.Controllers
                 }
                 if (age != null)
                 {
-                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsByAge(age)), null));
+                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsByAge(age)), page));
                 }
                 if (fromDate != null && toDate != null)
                 {
-                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsWithinDate(fromDate, toDate)), null));
+                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsWithinDate(fromDate, toDate)), page));
                 }
-                return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetAll()), null));
+                return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetAll()), page));
             }
             catch (Exception e)
             {
