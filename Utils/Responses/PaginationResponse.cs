@@ -24,8 +24,7 @@ namespace SkiTickets.Utils.Responses
             PreviousOffset = (Offset - Limit) < 0 ? 0 : (Offset - Limit);
             NextOffset = Offset + Limit;
             PageCount = (int) Math.Ceiling((double) Data.Count / (double) Limit);
-
-
+            
             Metadata = new Metadata()
             {
                 Pagination = new Pagination()
