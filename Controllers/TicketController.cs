@@ -45,7 +45,7 @@ namespace SkiTickets.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<PaginationResponse<List<Ticket>>> GetTickets([FromQuery(Name = "age")] string? age, 
+        public ActionResult<PaginationResponse<List<Models.Ticket>>> GetTickets([FromQuery(Name = "age")] string? age, 
             [FromQuery(Name = "from")] DateTime? fromDate, [FromQuery(Name = "to")] DateTime? toDate, [FromQuery(Name = "page")] int? page)
         {
             try
