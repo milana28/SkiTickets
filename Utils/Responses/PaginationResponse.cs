@@ -16,7 +16,18 @@ namespace SkiTickets.Utils.Responses
         
         public PaginationResponse(List<T> response, int? pageNumber, int? pageSize)
         {
-            Data = response;
+            if (pageNumber != null && pageSize != null)
+            {
+                var index = (int) ((pageNumber - 1) * pageSize);
+                var count = (int) pageSize;
+                Data = response.GetRange(index, count);
+                Console.WriteLine(Data.Count);
+            }
+            else
+            {
+                Data = response;
+            }
+            
             Metadata = new Metadata();
             PageNumber = pageNumber ?? 1;
             Limit =  pageSize ?? 25;
