@@ -14,12 +14,37 @@ namespace SkiTickets.Utils.Responses
         private int NextOffset { set; get; }
         private int PageCount { set; get; }
 
-        public PaginationResponse(List<T> response, int? pageNumber)
+        public PaginationResponse(List<T> response)
+        {
+            Data = response;
+            Metadata = new Metadata();
+            PageNumber = 1;
+            Limit = 25;
+            Offset = (PageNumber - 1) * Limit;
+            PreviousOffset = (Offset - Limit) < 0 ? 0 : (Offset - Limit);
+            NextOffset = Offset + Limit;
+            PageCount = (int) Math.Ceiling((double) Data.Count / (double) Limit);
+            
+            Metadata = new Metadata()
+            {
+                Pagination = new Pagination()
+                {
+                    Offset = Offset,
+                    Limit = Limit,
+                    PreviousOffset = PreviousOffset,
+                    NextOffset = NextOffset,
+                    CurrentPage = PageNumber,
+                    PageCount = PageCount,
+                    TotalCount = Data.Count
+                }
+            };
+        }
+        public PaginationResponse(List<T> response, int? pageNumber, int? pageSize)
         {
             Data = response;
             Metadata = new Metadata();
             PageNumber = pageNumber ?? 1;
-            Limit = 25;
+            Limit =  pageSize ?? 25;
             Offset = (PageNumber - 1) * Limit;
             PreviousOffset = (Offset - Limit) < 0 ? 0 : (Offset - Limit);
             NextOffset = Offset + Limit;

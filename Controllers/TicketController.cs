@@ -46,7 +46,8 @@ namespace SkiTickets.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<PaginationResponse<List<Models.Ticket>>> GetTickets([FromQuery(Name = "age")] string? age, 
-            [FromQuery(Name = "from")] DateTime? fromDate, [FromQuery(Name = "to")] DateTime? toDate, [FromQuery(Name = "page")] int? page)
+            [FromQuery(Name = "from")] DateTime? fromDate, [FromQuery(Name = "to")] DateTime? toDate, [FromQuery(Name = "page")] int? page,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
             try
             {
@@ -54,15 +55,28 @@ namespace SkiTickets.Controllers
                 {
                     _cache.Set("Tickets", tickets, TimeSpan.FromSeconds(600));
                 }
+                if (page != null || pageSize != null)
+                {
+                    if (age != null)
+                    {
+                        return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsByAge(age)), page, pageSize));
+                    }
+                    if (fromDate != null && toDate != null)
+                    {
+                        return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsWithinDate(fromDate, toDate)), page, pageSize));
+                    }
+                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetAll()), page, pageSize));
+                }
                 if (age != null)
                 {
-                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsByAge(age)), page));
+                    return Ok(_ticket.GetTicketsByAge(age));
                 }
                 if (fromDate != null && toDate != null)
                 {
-                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsWithinDate(fromDate, toDate)), page));
+                    return Ok(_ticket.GetTicketsWithinDate(fromDate, toDate));
                 }
-                return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetAll()), page));
+                return Ok(_ticket.GetAll());
+
             }
             catch (Exception e)
             {
