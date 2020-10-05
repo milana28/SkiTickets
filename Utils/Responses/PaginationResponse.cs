@@ -21,7 +21,11 @@ namespace SkiTickets.Utils.Responses
                 var index = (int) ((pageNumber - 1) * pageSize);
                 var count = (int) pageSize;
                 Data = response.GetRange(index, count);
-                Console.WriteLine(Data.Count);
+            }
+            else if (pageNumber != null)
+            {
+                var index = (int) ((pageNumber - 1) * 25);
+                Data = response.GetRange(index, 25);
             }
             else
             {
