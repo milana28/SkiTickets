@@ -11,12 +11,10 @@ namespace SkiTickets.Domain
     public interface ITicket
     {
         Models.Ticket CreateTicket(TicketDto ticketDto);
+        List<Models.Ticket> GetTickets(string? age, DateTime? from, DateTime? to);
         Models.Ticket GetTicketById(int id);
-        List<Models.Ticket> GetAll();
         Models.Ticket DeleteTicket(int id);
         Models.Ticket UpdateTicket(int id, TicketDto ticketDto);
-        List<Models.Ticket> GetTicketsByAge(string? age);
-        List<Models.Ticket> GetTicketsWithinDate(DateTime? fromDate, DateTime? toDate);
         List<Models.Ticket> GetTicketsByType(string type);
     }
     
@@ -47,34 +45,14 @@ namespace SkiTickets.Domain
                 toDate = ticketDto.ToDate
             }));
         }
-        public List<Models.Ticket> GetAll()
+        public List<Models.Ticket> GetTickets(string? age, DateTime? from, DateTime? to)
         {
-            var ticketList = new List<Models.Ticket>();
-            var ticketDaoList = _database.Query<TicketDao>("SELECT * FROM SkiTickets.Ticket").ToList();
-            ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
+            if (from != null && to != null)
+            {
+                return GetTicketsWithinDate(from, to); 
+            }
 
-            return ticketList;
-        }
-        public List<Models.Ticket> GetTicketsByAge(string? age)
-        {
-            var ageId = _age.GetAgeByType(age).Id;
-            var ticketList = new List<Models.Ticket>();
-            const string sql = 
-                "SELECT t.* FROM SkiTickets.Ticket as t LEFT JOIN SkiTickets.TicketType as tt ON t.ticketTypeId = tt.id WHERE tt.ageId = @ageId";
-            var ticketDaoList = _database.Query<TicketDao>(sql, new {ageId = ageId}).ToList();
-            ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
-
-            return ticketList;
-        }
-        public List<Models.Ticket> GetTicketsWithinDate(DateTime? fromDate, DateTime? toDate)
-        {
-            var ticketList = new List<Models.Ticket>();
-            const string sql = 
-                "SELECT * FROM SkiTickets.Ticket WHERE fromDate >= @fromDate AND toDate <= @toDate";
-            var ticketDaoList = _database.Query<TicketDao>(sql, new {fromDate = fromDate, toDate = toDate}).ToList();
-            ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
-
-            return ticketList;
+            return age == null ? GetAll() : GetTicketsByAge(age);
         }
         public List<Models.Ticket> GetTicketsByType(string type)
         {
@@ -115,6 +93,35 @@ namespace SkiTickets.Domain
             });
 
             return GetTicketById(id);
+        }
+        private List<Models.Ticket> GetAll()
+        {
+            var ticketList = new List<Models.Ticket>();
+            var ticketDaoList = _database.Query<TicketDao>("SELECT * FROM SkiTickets.Ticket").ToList();
+            ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
+
+            return ticketList;
+        }
+        private List<Models.Ticket> GetTicketsByAge(string? age)
+        {
+            var ageId = _age.GetAgeByType(age).Id;
+            var ticketList = new List<Models.Ticket>();
+            const string sql = 
+                "SELECT t.* FROM SkiTickets.Ticket as t LEFT JOIN SkiTickets.TicketType as tt ON t.ticketTypeId = tt.id WHERE tt.ageId = @ageId";
+            var ticketDaoList = _database.Query<TicketDao>(sql, new {ageId = ageId}).ToList();
+            ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
+
+            return ticketList;
+        }
+        private List<Models.Ticket> GetTicketsWithinDate(DateTime? fromDate, DateTime? toDate)
+        {
+            var ticketList = new List<Models.Ticket>();
+            const string sql = 
+                "SELECT * FROM SkiTickets.Ticket WHERE fromDate >= @fromDate AND toDate <= @toDate";
+            var ticketDaoList = _database.Query<TicketDao>(sql, new {fromDate = fromDate, toDate = toDate}).ToList();
+            ticketDaoList.ForEach(t => ticketList.Add(TransformDaoToBusinessLogicTicket(t)));
+
+            return ticketList;
         }
         private Models.Ticket TransformDaoToBusinessLogicTicket(TicketDao ticketDao)
         {

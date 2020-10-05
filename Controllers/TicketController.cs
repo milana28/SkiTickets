@@ -57,26 +57,10 @@ namespace SkiTickets.Controllers
                 }
                 if (page != null || pageSize != null)
                 {
-                    if (age != null)
-                    {
-                        return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsByAge(age)), page, pageSize));
-                    }
-                    if (fromDate != null && toDate != null)
-                    {
-                        return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTicketsWithinDate(fromDate, toDate)), page, pageSize));
-                    }
-                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetAll()), page, pageSize));
+                    return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTickets(age, fromDate, toDate)), page, pageSize));
                 }
-                if (age != null)
-                {
-                    return Ok(_ticket.GetTicketsByAge(age));
-                }
-                if (fromDate != null && toDate != null)
-                {
-                    return Ok(_ticket.GetTicketsWithinDate(fromDate, toDate));
-                }
-                return Ok(_ticket.GetAll());
-
+              
+                return Ok(_ticket.GetTickets(age, fromDate, toDate));
             }
             catch (Exception e)
             {
