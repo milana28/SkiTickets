@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using Dapper;
 using SkiTickets.Models;
 using SkiTickets.Utils;
@@ -26,7 +24,8 @@ namespace SkiTickets.Domain
 
         public Models.TicketUsed CheckTicket(int ticketPurchaseId)
         {
-            const string sql = "INSERT INTO SkiTickets.TicketUsed VALUES (@ticketPurchaseId, @time) SELECT * FROM SkiTickets.TicketUsed WHERE id = SCOPE_IDENTITY()";
+            const string sql = "INSERT INTO SkiTickets.TicketUsed VALUES (@ticketPurchaseId, @time)" + 
+                               "SELECT * FROM SkiTickets.TicketUsed WHERE id = SCOPE_IDENTITY()";
             return TransformDaoToBusinessLogicTicketUsed(_database.QueryFirstOrDefault<TicketUsedDao>(sql,
                 new {ticketPurchaseId = ticketPurchaseId, time = DateTime.Now}));
         }

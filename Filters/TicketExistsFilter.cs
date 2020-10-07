@@ -2,7 +2,6 @@ using System.Data;
 using System.Data.SqlClient;
 using Dapper;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Server.IIS.Core;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 

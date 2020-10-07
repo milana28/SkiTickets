@@ -56,8 +56,8 @@ namespace SkiTickets.Domain
             }
 
             const string sql =
-                "INSERT INTO SkiTickets.TicketPurchase VALUES (@ticketId, @personId, @sellingPointId, @date)" +
-                 "SELECT * FROM SkiTickets.TicketPurchase WHERE id = SCOPE_IDENTITY()";
+                "INSERT INTO SkiTickets.TicketPurchase VALUES (@ticketId, @personId, @sellingPointId, @date)" + 
+                "SELECT * FROM SkiTickets.TicketPurchase WHERE id = SCOPE_IDENTITY()";
 
             return TransformDaoToBusinessLogicTicketPurchase(_database.QueryFirstOrDefault<TicketPurchaseDao>(sql, new
             {

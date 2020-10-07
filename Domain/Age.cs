@@ -29,7 +29,8 @@ namespace SkiTickets.Domain
         public Models.Age CreateAge(AgeDto ageDto)
         {
             const string sql =
-                "INSERT INTO SkiTickets.Age VALUES (@type, @minYears, @maxYears) SELECT * FROM SkiTickets.Age WHERE id = SCOPE_IDENTITY()";
+                "INSERT INTO SkiTickets.Age VALUES (@type, @minYears, @maxYears)" + 
+                " SELECT * FROM SkiTickets.Age WHERE id = SCOPE_IDENTITY()";
 
             return TransformDaoToBusinessLogicAge(_database.QueryFirst<AgeDao>(sql, new
             {

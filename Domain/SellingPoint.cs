@@ -28,7 +28,8 @@ namespace SkiTickets.Domain
         public Models.SellingPoint CreateSellingPoint(SellingPointDto sellingPointDto)
         {
             const string sql =
-                "INSERT INTO SkiTickets.SellingPoint VALUES (@name, @location) SELECT * FROM SkiTickets.SellingPoint WHERE id = SCOPE_IDENTITY()";
+                "INSERT INTO SkiTickets.SellingPoint VALUES (@name, @location)" + 
+                " SELECT * FROM SkiTickets.SellingPoint WHERE id = SCOPE_IDENTITY()";
 
             return TransformDaoToBusinessLogicSellingPoint(_database.QueryFirst<SellingPointDao>(sql, 
                 new {firstName = sellingPointDto.Name, lastName = sellingPointDto.Location}));

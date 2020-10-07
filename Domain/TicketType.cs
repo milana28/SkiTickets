@@ -7,8 +7,6 @@ namespace SkiTickets.Domain
 {
     public interface ITicketType
     {
-        Models.TicketType GetTicketTypeByAge(string age);
-        Models.TicketType GetTicketTypeByType(string type);
         Models.TicketType GetTicketTypeById(int id);
         Models.TicketType GetTicketTypeByTypeAndAge(string type, string ageType);
     }
@@ -23,23 +21,11 @@ namespace SkiTickets.Domain
             _database = database.Get();
             _age = age;
         }
-
-        public Models.TicketType GetTicketTypeByAge(string age)
-        {
-            var ageId = _age.GetAgeByType(age);
-            const string sql = "SELECT * FROM SkiTickets.TicketType WHERE ageId = @ageId";
-
-            return TransformDaoToBusinessLogicTicketType(_database.QueryFirstOrDefault<TicketTypeDao>(sql, new {ageId = ageId}));
-        }
+        
         public Models.TicketType GetTicketTypeById(int id)
         {
             const string sql = "SELECT * FROM SkiTickets.TicketType WHERE id = @ticketTypeId";
             return TransformDaoToBusinessLogicTicketType(_database.QueryFirstOrDefault<TicketTypeDao>(sql, new {ticketTypeId = id}));
-        }
-        public Models.TicketType GetTicketTypeByType(string type)
-        {
-            const string sql = "SELECT * FROM SkiTickets.TicketType WHERE type = @ticketType";
-            return TransformDaoToBusinessLogicTicketType(_database.QueryFirstOrDefault<TicketTypeDao>(sql, new {ticketType = type}));
         }
         public Models.TicketType GetTicketTypeByTypeAndAge(string type, string ageType)
         {

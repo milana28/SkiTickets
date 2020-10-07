@@ -8,7 +8,6 @@ using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
 using SkiTickets.Utils.Responses;
-using Ticket = SkiTickets.Domain.Ticket;
 
 namespace SkiTickets.Controllers
 {

@@ -25,6 +25,7 @@ namespace SkiTickets.Controllers
         [HttpPost]
         [CheckCapacity]
         [AgesMatchingFilter]
+        [SellingPointValidFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Models.TicketPurchase> CreateTicketPurchase(TicketPurchaseDto ticketPurchaseDto)
@@ -38,6 +39,10 @@ namespace SkiTickets.Controllers
                 return BadRequest();
             }
             catch (AgesNotMatchingException e)
+            {
+                return BadRequest();
+            }
+            catch (SellingPointNotFoundException e)
             {
                 return BadRequest();
             }

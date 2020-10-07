@@ -33,7 +33,8 @@ namespace SkiTickets.Domain
             var ageId = _age.GetAgeByType(personDto.Age).Id;
 
             const string sql =
-                "INSERT INTO SkiTickets.Person VALUES (@firstName, @lastName, @ageId) SELECT * FROM SkiTickets.Person WHERE id = SCOPE_IDENTITY()";
+                "INSERT INTO SkiTickets.Person VALUES (@firstName, @lastName, @ageId)" + 
+                " SELECT * FROM SkiTickets.Person WHERE id = SCOPE_IDENTITY()";
 
             return TransformDaoToBusinessLogicPerson(_database.QueryFirst<PersonDao>(sql, new
             {
