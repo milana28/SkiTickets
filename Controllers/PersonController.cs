@@ -22,7 +22,7 @@ namespace SkiTickets.Controllers
 
         [HttpPost]
         [AgeValidFilter]
-        [PersonExistsFilter]
+        [PersonFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.Person> CreatePerson([FromBody] PersonDto personDto)
@@ -100,6 +100,7 @@ namespace SkiTickets.Controllers
         
         [HttpPut("{id}")]
         [PersonExistsFilter]
+        [PersonFilter]
         [AgeValidFilter(info = typeof(PersonDto))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -117,6 +118,10 @@ namespace SkiTickets.Controllers
             catch (AgeNotFoundException e)
             {
                 return NotFound(e.Message);
+            }
+            catch (PersonBadRequestException e)
+            {
+                return BadRequest();
             }
             catch (Exception e)
             {
