@@ -21,7 +21,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPost]
-        [AgeValidFilter]
+        [SellingPointFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.Person> CreatePerson([FromBody] SellingPointDto sellingPointDto)
@@ -30,9 +30,13 @@ namespace SkiTickets.Controllers
             {
                 return Created("https://localhost:5001/SellingPoint", _sellingPoint.CreateSellingPoint(sellingPointDto));
             }
+            catch (SellingPointBadRequestException e)
+            {
+                return BadRequest();
+            }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
         
@@ -47,7 +51,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
         
@@ -68,12 +72,12 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
         
         [HttpDelete("{id}")]
-        [PersonExistsFilter]
+        [SellingPointExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -89,29 +93,36 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
         
         [HttpPut("{id}")]
         [SellingPointExistsFilter]
+        [SellingPointFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.SellingPoint> UpdateSellingPoint(int id, SellingPointDto sellingPointDto)
         {
-            try
-            {
-                return Ok(_sellingPoint.UpdateSellingPoint(id, sellingPointDto));
-            }
-            catch (SellingPointNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
+            // try
+            // {
+            //     return Ok(_sellingPoint.UpdateSellingPoint(id, sellingPointDto));
+            // }
+            // catch (SellingPointNotFoundException e)
+            // {
+            //     return NotFound(e.Message);
+            // }
+            // catch (SellingPointBadRequestException e)
+            // {
+            //     return BadRequest();
+            // }
+            // catch (Exception e)
+            // {
+            //     return BadRequest();
+            // }
+            
+            return Ok(_sellingPoint.UpdateSellingPoint(id, sellingPointDto));
         }
     }
 }

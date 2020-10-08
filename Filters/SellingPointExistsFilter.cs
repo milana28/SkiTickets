@@ -11,14 +11,13 @@ namespace SkiTickets.Utils.Filters
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
-        private int _sellingPintId;
-        
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _sellingPintId = (int) context.ActionArguments["id"];
+            var sellingPintId = (int) context.ActionArguments["id"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
             const string sql = "SELECT * FROM SkiTickets.SellingPoint WHERE id = @id";
-            var sellingPoint = database.QueryFirstOrDefault<SellingPointDao>(sql, new {id = _sellingPintId});
+            var sellingPoint = database.QueryFirstOrDefault<SellingPointDao>(sql, new {id = sellingPintId});
 
             if (sellingPoint == null)
             {

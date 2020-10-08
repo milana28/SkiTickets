@@ -11,11 +11,11 @@ namespace SkiTickets.Utils.Filters
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
-        private TicketPurchaseDto _ticketPurchase = new TicketPurchaseDto();
+       
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _ticketPurchase = (TicketPurchaseDto) context.ActionArguments["ticketPurchaseDto"];
-            var sellingPointId = _ticketPurchase.SellingPointId;
+            var ticketPurchase = (TicketPurchaseDto) context.ActionArguments["ticketPurchaseDto"];
+            var sellingPointId = ticketPurchase.SellingPointId;
            
             using IDbConnection database = new SqlConnection(MyConnectionString);
             const string sql = "SELECT * FROM SkiTickets.SellingPoint WHERE id = @id";

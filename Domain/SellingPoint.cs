@@ -32,7 +32,7 @@ namespace SkiTickets.Domain
                 " SELECT * FROM SkiTickets.SellingPoint WHERE id = SCOPE_IDENTITY()";
 
             return TransformDaoToBusinessLogicSellingPoint(_database.QueryFirst<SellingPointDao>(sql, 
-                new {firstName = sellingPointDto.Name, lastName = sellingPointDto.Location}));
+                new {name = sellingPointDto.Name, location = sellingPointDto.Location}));
         }
         public List<Models.SellingPoint> GetAll()
         {
@@ -58,9 +58,10 @@ namespace SkiTickets.Domain
         public Models.SellingPoint UpdateSellingPoint(int id, SellingPointDto sellingPointDto)
         {
             const string sql =
-                "UPDATE SkiTickets.SellingPoint SET name = @name, lcoation = @location WHERE id = @id";
+                "UPDATE SkiTickets.SellingPoint SET name = @name, location = @location WHERE id = @id";
             _database.Execute(sql, new
             {
+                id = id,
                 name = sellingPointDto.Name,
                 location = sellingPointDto.Location,
             });
