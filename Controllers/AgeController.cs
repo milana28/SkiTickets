@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
@@ -21,6 +22,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPost]
+        [AgeFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Models.Age> CreateTicket(AgeDto ageDto)
@@ -28,6 +30,10 @@ namespace SkiTickets.Controllers
             try
             {
                 return Created("https://localhost:5001/Age", _age.CreateAge(ageDto));
+            }
+            catch (AgeBadRequestException e)
+            {
+                return BadRequest();
             }
             catch (Exception e)
             {
@@ -46,7 +52,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
         
@@ -67,7 +73,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
 
@@ -88,12 +94,12 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
         
         [HttpPut("{id}")]
-        [AgeExistsFilter]
+        [AgeFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -107,9 +113,13 @@ namespace SkiTickets.Controllers
             {
                 return NotFound(e.Message);
             }
+            catch (AgeBadRequestException e)
+            {
+                return BadRequest();
+            }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest();
             }
         }
     }

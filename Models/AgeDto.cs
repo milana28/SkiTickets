@@ -9,9 +9,9 @@ namespace SkiTickets.Models
         [StringLength(100)]
         public string Type { set; get; }
         [Required]
-        [Range(6, 110)]
+        [Range(6, 100)]
         public int MinYears { set; get; }
-        [Range(6, 110)]
+        [Range(6, 100)]
         public int MaxYears { set; get; }
     }
 }
