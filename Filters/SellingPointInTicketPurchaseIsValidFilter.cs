@@ -7,21 +7,24 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class TicketExistsFilter : ActionFilterAttribute
+    public class SellingPointInTicketPurchaseIsValidFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
-        
+       
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var ticketId = (int) context.ActionArguments["id"];
+            var ticketPurchase = (TicketPurchaseDto) context.ActionArguments["ticketPurchaseDto"];
+            var sellingPointId = ticketPurchase.SellingPointId;
+            
             using IDbConnection database = new SqlConnection(MyConnectionString);
-            const string sql = "SELECT * FROM SkiTickets.Ticket WHERE id = @id";
-            var ticket = database.QueryFirstOrDefault<TicketDao>(sql, new {id = ticketId});
+            
+            const string sql = "SELECT * FROM SkiTickets.SellingPoint WHERE id = @id";
+            var sellingPoint = database.QueryFirstOrDefault<SellingPointDao>(sql, new {id = sellingPointId});
 
-            if (ticket == null)
+            if (sellingPoint == null)
             {
-                throw new TicketNotFoundException("Ticket does not exist!");
+                throw new SellingPointNotFoundException("SellingPoint does not exist!");
             }
             
             base.OnActionExecuting(context);

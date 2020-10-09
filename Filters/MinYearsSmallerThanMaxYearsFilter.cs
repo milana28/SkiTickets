@@ -1,32 +1,24 @@
-using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using Dapper;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class CheckCapacity : ActionFilterAttribute
+    public class MinYearsSmallerThanMaxYearsFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var now = DateTime.Now;
-            var twoHoursAgo = now.AddHours(-2);
+            var age = (AgeDto) context.ActionArguments["ageDto"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
-
-            const string sql = "SELECT * FROM SkiTickets.TicketUsed WHERE time <= @now AND time >= @twoHoursAgo";
-            var ticketsUsedDao = database.Query<TicketUsedDao>(sql, new {now = DateTime.Now, twoHoursAgo = twoHoursAgo})
-                .ToList();
-
-            if (ticketsUsedDao.Count >= 1000)
+            
+            if (age.MinYears >= age.MaxYears)
             {
-                throw new NoCapacity("Capacity is full!");
+                throw new AgeBadRequestException("MinYears must be smaller than maxYears!");
             }
 
             base.OnActionExecuting(context);

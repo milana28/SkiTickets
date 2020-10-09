@@ -7,25 +7,27 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class SellingPointValidFilter : ActionFilterAttribute
+    public class AgeUniqueOnCreateFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
-       
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var ticketPurchase = (TicketPurchaseDto) context.ActionArguments["ticketPurchaseDto"];
-            var sellingPointId = ticketPurchase.SellingPointId;
-           
+            var age = (AgeDto) context.ActionArguments["ageDto"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
-            const string sql = "SELECT * FROM SkiTickets.SellingPoint WHERE id = @id";
-            var sellingPoint = database.QueryFirstOrDefault<SellingPointDao>(sql, new {id = sellingPointId});
 
-            if (sellingPoint == null)
+            const string sql =
+                "SELECT * FROM SkiTickets.Age WHERE type = @type OR (@min >= minYears AND @min <= maxYears) OR (@max >= minYears AND @max <= maxYears)";
+            var ageDao =
+                database.QueryFirstOrDefault<AgeDao>(sql,
+                    new {type = age.Type, min = age.MinYears, max = age.MaxYears});
+
+            if (ageDao != null)
             {
-                throw new SellingPointNotFoundException("SellingPoint does not exist!");
+                throw new AgeBadRequestException("Age already exists!");
             }
-            
+
             base.OnActionExecuting(context);
         }
     }

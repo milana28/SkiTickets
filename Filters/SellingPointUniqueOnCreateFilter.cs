@@ -7,24 +7,24 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class PersonExistsFilter : ActionFilterAttribute
+    public class SellingPointUniqueOnCreateFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var args = context.ActionArguments;
+            var sellingPoint = (SellingPointDto) context.ActionArguments["sellingPointDto"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
-            var personId = (int) args["id"];
-            const string sql = "SELECT * FROM SkiTickets.Person WHERE id = @id";
-            var person = database.QueryFirstOrDefault<PersonDao>(sql, new {id = personId});
 
-            if (person == null)
+            const string sql = "SELECT * FROM SkiTickets.SellingPoint WHERE name = @name AND location = @location";
+            var sellingPointDao = database.QueryFirstOrDefault<SellingPointDao>(sql,
+                new {name = sellingPoint.Name, location = sellingPoint.Location});
+
+            if (sellingPointDao != null)
             {
-                throw new PersonNotFoundException("Person does not exist!");
+                throw new SellingPointBadRequestException("SellingPoint already exists!");
             }
-
 
             base.OnActionExecuting(context);
         }

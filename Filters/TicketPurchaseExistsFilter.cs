@@ -21,7 +21,7 @@ namespace SkiTickets.Utils.Filters
 
             if (ticketPurchase == null)
             {
-                throw new TicketPurchaseNotFound("TicketPurchase does not exist!");
+                throw new TicketPurchaseNotFoundException("TicketPurchase does not exist!");
             }
             
             base.OnActionExecuting(context);

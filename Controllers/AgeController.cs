@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
@@ -22,7 +21,8 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPost]
-        [AgeFilter]
+        [MinYearsSmallerThanMaxYearsFilter]
+        [AgeUniqueOnCreateFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Models.Age> CreateTicket(AgeDto ageDto)
@@ -57,7 +57,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpGet("{id}")]
-        [AgeExistsFilter]
+        [AgeWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,7 +78,7 @@ namespace SkiTickets.Controllers
         }
 
         [HttpDelete("{id}")]
-        [AgeExistsFilter]
+        [AgeWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -99,11 +99,13 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPut("{id}")]
-        [AgeFilter]
+        [AgeWithIdExistsFilter]
+        [MinYearsSmallerThanMaxYearsFilter]
+        [AgeUniqueOnUpdateFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Age> UpdatePerson(int id, AgeDto ageDto)
+        public ActionResult<Models.Age> UpdateAge(int id, AgeDto ageDto)
         {
             try
             {

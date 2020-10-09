@@ -21,7 +21,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPost]
-        [SellingPointFilter]
+        [SellingPointUniqueOnCreateFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.Person> CreatePerson([FromBody] SellingPointDto sellingPointDto)
@@ -56,7 +56,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpGet("{id}")]
-        [SellingPointExistsFilter]
+        [SellingPointWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -77,7 +77,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpDelete("{id}")]
-        [SellingPointExistsFilter]
+        [SellingPointWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,31 +98,29 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPut("{id}")]
-        [SellingPointExistsFilter]
-        [SellingPointFilter]
+        [SellingPointWithIdExistsFilter]
+        [SellingPointUniqueOnUpdateFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.SellingPoint> UpdateSellingPoint(int id, SellingPointDto sellingPointDto)
         {
-            // try
-            // {
-            //     return Ok(_sellingPoint.UpdateSellingPoint(id, sellingPointDto));
-            // }
-            // catch (SellingPointNotFoundException e)
-            // {
-            //     return NotFound(e.Message);
-            // }
-            // catch (SellingPointBadRequestException e)
-            // {
-            //     return BadRequest();
-            // }
-            // catch (Exception e)
-            // {
-            //     return BadRequest();
-            // }
-            
-            return Ok(_sellingPoint.UpdateSellingPoint(id, sellingPointDto));
+            try
+            {
+                return Ok(_sellingPoint.UpdateSellingPoint(id, sellingPointDto));
+            }
+            catch (SellingPointNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (SellingPointBadRequestException e)
+            {
+                return BadRequest();
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
     }
 }

@@ -24,8 +24,8 @@ namespace SkiTickets.Controllers
         
         [HttpPost]
         [CheckCapacity]
-        [AgesMatchingFilter]
-        [SellingPointValidFilter]
+        [AgeInTicketPurchaseMatchesAgeInTicketFilter]
+        [SellingPointInTicketPurchaseIsValidFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Models.TicketPurchase> CreateTicketPurchase(TicketPurchaseDto ticketPurchaseDto)
@@ -62,7 +62,7 @@ namespace SkiTickets.Controllers
             {
                 return Created("https://localhost:5001/TicketPurchase/{id}/check", _ticketUsed.CheckTicket(id));
             }
-            catch (TicketPurchaseNotFound e)
+            catch (TicketPurchaseNotFoundException e)
             {
                 return NotFound();
             }
@@ -97,7 +97,7 @@ namespace SkiTickets.Controllers
             {
                 return Ok(_ticketPurchase.GetTicketPurchaseById(id));
             }
-            catch(TicketPurchaseNotFound e)
+            catch(TicketPurchaseNotFoundException e)
             {
                 return NotFound(e.Message);
             }

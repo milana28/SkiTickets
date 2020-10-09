@@ -7,7 +7,7 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class SellingPointExistsFilter : ActionFilterAttribute
+    public class SellingPointWithIdExistsFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
@@ -16,6 +16,7 @@ namespace SkiTickets.Utils.Filters
         {
             var sellingPintId = (int) context.ActionArguments["id"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
+            
             const string sql = "SELECT * FROM SkiTickets.SellingPoint WHERE id = @id";
             var sellingPoint = database.QueryFirstOrDefault<SellingPointDao>(sql, new {id = sellingPintId});
 

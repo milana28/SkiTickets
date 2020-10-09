@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using Dapper;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SkiTickets.Models;
@@ -9,26 +8,25 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class CheckCapacity : ActionFilterAttribute
+    [AttributeUsage(AttributeTargets.All)]
+    public sealed class AgeWithIdExistsFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var now = DateTime.Now;
-            var twoHoursAgo = now.AddHours(-2);
+            var ageId = (int) context.ActionArguments["id"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
+            
+            const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @id";
+            var age = database.QueryFirstOrDefault<AgeDao>(sql, new {id = ageId});
 
-            const string sql = "SELECT * FROM SkiTickets.TicketUsed WHERE time <= @now AND time >= @twoHoursAgo";
-            var ticketsUsedDao = database.Query<TicketUsedDao>(sql, new {now = DateTime.Now, twoHoursAgo = twoHoursAgo})
-                .ToList();
-
-            if (ticketsUsedDao.Count >= 1000)
+            if (age == null)
             {
-                throw new NoCapacity("Capacity is full!");
+                throw new AgeNotFoundException("Age does not exist!");
             }
-
+            
             base.OnActionExecuting(context);
         }
     }

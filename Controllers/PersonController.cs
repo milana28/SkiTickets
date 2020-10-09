@@ -22,7 +22,7 @@ namespace SkiTickets.Controllers
 
         [HttpPost]
         [AgeValidFilter]
-        [PersonFilter]
+        [PersonUniqueOnCreateFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.Person> CreatePerson([FromBody] PersonDto personDto)
@@ -57,7 +57,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpGet("{id}")]
-        [PersonExistsFilter]
+        [PersonWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,7 +78,7 @@ namespace SkiTickets.Controllers
         }
 
         [HttpDelete("{id}")]
-        [PersonExistsFilter]
+        [PersonWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -99,9 +99,9 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPut("{id}")]
-        [PersonExistsFilter]
-        [PersonFilter]
-        [AgeValidFilter(info = typeof(PersonDto))]
+        [PersonWithIdExistsFilter]
+        [AgeValidFilter]
+        [PersonUniqueOnUpdateFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
