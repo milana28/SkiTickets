@@ -55,16 +55,16 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("{sellingPointId}")]
         [SellingPointWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Age> GetSellingPointById(int id)
+        public ActionResult<Models.Age> GetSellingPointById(int sellingPointId)
         {
             try
             {
-                return Ok(_sellingPoint.GetSellingPointById(id));
+                return Ok(_sellingPoint.GetSellingPointById(sellingPointId));
             }
             catch (SellingPointNotFoundException e)
             {
@@ -76,16 +76,16 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpDelete("{id}")]
+        [HttpDelete("{sellingPointId}")]
         [SellingPointWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.SellingPoint> DeleteSellingPoint(int id)
+        public ActionResult<Models.SellingPoint> DeleteSellingPoint(int sellingPointId)
         {
             try
             {
-                return Ok(_sellingPoint.DeleteSellingPoint(id));
+                return Ok(_sellingPoint.DeleteSellingPoint(sellingPointId));
             }
             catch (SellingPointNotFoundException e)
             {
@@ -97,17 +97,17 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpPut("{id}")]
+        [HttpPut("{sellingPointId}")]
         [SellingPointWithIdExistsFilter]
         [SellingPointUniqueOnUpdateFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.SellingPoint> UpdateSellingPoint(int id, SellingPointDto sellingPointDto)
+        public ActionResult<Models.SellingPoint> UpdateSellingPoint(int sellingPointId, SellingPointDto sellingPointDto)
         {
             try
             {
-                return Ok(_sellingPoint.UpdateSellingPoint(id, sellingPointDto));
+                return Ok(_sellingPoint.UpdateSellingPoint(sellingPointId, sellingPointDto));
             }
             catch (SellingPointNotFoundException e)
             {

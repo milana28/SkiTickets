@@ -76,6 +76,7 @@ namespace SkiTickets.Domain
                 "UPDATE SkiTickets.Ticket SET ticketTypeId = @ticketTypeId, price = @price, fromDate = @fromDate, toDate = @toDate WHERE id = @id";
             _database.Execute(sql, new
             {
+                id = id,
                 ticketTypeId = ticketTypeId,
                 price = ticketDto.Price,
                 fromDate = ticketDto.FromDate,

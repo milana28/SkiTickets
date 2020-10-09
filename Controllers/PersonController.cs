@@ -56,16 +56,16 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("{personId}")]
         [PersonWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> GetPersonById(int id)
+        public ActionResult<Models.Person> GetPersonById(int personId)
         {
             try
             {
-                return Ok(_person.GetPersonById(id));
+                return Ok(_person.GetPersonById(personId));
             }
             catch (PersonNotFoundException e)
             {
@@ -77,16 +77,16 @@ namespace SkiTickets.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{personId}")]
         [PersonWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> DeletePerson(int id)
+        public ActionResult<Models.Person> DeletePerson(int personId)
         {
             try
             {
-                return Ok(_person.DeletePerson(id));
+                return Ok(_person.DeletePerson(personId));
             }
             catch (PersonNotFoundException e)
             {
@@ -98,18 +98,18 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpPut("{id}")]
+        [HttpPut("{personId}")]
         [PersonWithIdExistsFilter]
         [AgeValidFilter]
         [PersonUniqueOnUpdateFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Person> UpdatePerson(int id, PersonDto personDto)
+        public ActionResult<Models.Person> UpdatePerson(int personId, PersonDto personDto)
         {
             try
             {
-                return Ok(_person.UpdatePerson(id, personDto));
+                return Ok(_person.UpdatePerson(personId, personDto));
             }
             catch (PersonNotFoundException e)
             {

@@ -7,21 +7,22 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class TicketExistsFilter : ActionFilterAttribute
+    public class TicketPurchaseWithIdExistsFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
         
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var ticketId = (int) context.ActionArguments["id"];
+            var ticketPurchaseId = (int) context.ActionArguments["ticketPurchaseId"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
-            const string sql = "SELECT * FROM SkiTickets.Ticket WHERE id = @id";
-            var ticket = database.QueryFirstOrDefault<TicketDao>(sql, new {id = ticketId});
+            
+            const string sql = "SELECT * FROM SkiTickets.TicketPurchase WHERE id = @id";
+            var ticketPurchase = database.QueryFirstOrDefault<TicketPurchaseDao>(sql, new {id = ticketPurchaseId});
 
-            if (ticket == null)
+            if (ticketPurchase == null)
             {
-                throw new TicketNotFoundException("Ticket does not exist!");
+                throw new TicketPurchaseNotFoundException("TicketPurchase does not exist!");
             }
             
             base.OnActionExecuting(context);

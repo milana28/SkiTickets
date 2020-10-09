@@ -15,7 +15,7 @@ namespace SkiTickets.Utils.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var person = (PersonDto) context.ActionArguments["personDto"];
-            var id = (int) context.ActionArguments["id"];
+            var id = (int) context.ActionArguments["personId"];
             
             using IDbConnection database = new SqlConnection(MyConnectionString);
 

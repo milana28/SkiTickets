@@ -7,25 +7,25 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class PersonWithIdExistsFilter : ActionFilterAttribute
+    public class TicketTypeWithTypeExistsFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
-
+        private TicketDto _ticket = new TicketDto();
+        
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var personId = (int) context.ActionArguments["personId"];
+            var ticketType = (string) context.ActionArguments["ticketType"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
             
-            const string sql = "SELECT * FROM SkiTickets.Person WHERE id = @id";
-            var person = database.QueryFirstOrDefault<PersonDao>(sql, new {id = personId});
+            const string sql = "SELECT * FROM SkiTickets.TicketType WHERE type = @type";
+            var ticketTypeDao = database.QueryFirstOrDefault<AgeDao>(sql, new {type = ticketType});
 
-            if (person == null)
+            if (ticketType == null)
             {
-                throw new PersonNotFoundException("Person does not exist!");
+                throw new TicketTypeNotFoundException("TicketType does not exist!");
             }
-
-
+            
             base.OnActionExecuting(context);
         }
     }

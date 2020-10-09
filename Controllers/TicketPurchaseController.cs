@@ -52,15 +52,15 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpPost("{id}/check")]
-        [TicketPurchaseExistsFilter]
+        [HttpPost("{ticketPurchaseId}/check")]
+        [TicketPurchaseWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Models.TicketUsed> CheckTicket(int id)
+        public ActionResult<Models.TicketUsed> CheckTicket(int ticketPurchaseId)
         {
             try
             {
-                return Created("https://localhost:5001/TicketPurchase/{id}/check", _ticketUsed.CheckTicket(id));
+                return Created("https://localhost:5001/TicketPurchase/{id}/check", _ticketUsed.CheckTicket(ticketPurchaseId));
             }
             catch (TicketPurchaseNotFoundException e)
             {
@@ -86,16 +86,16 @@ namespace SkiTickets.Controllers
                 return BadRequest();
             }
         }
-        [HttpGet("{id}")]
-        [TicketPurchaseExistsFilter]
+        [HttpGet("{ticketPurchaseId}")]
+        [TicketPurchaseWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<Models.TicketPurchase>> GetTicketPurchaseById(int id)
+        public ActionResult<List<Models.TicketPurchase>> GetTicketPurchaseById(int ticketPurchaseId)
         {
             try
             {
-                return Ok(_ticketPurchase.GetTicketPurchaseById(id));
+                return Ok(_ticketPurchase.GetTicketPurchaseById(ticketPurchaseId));
             }
             catch(TicketPurchaseNotFoundException e)
             {
@@ -107,15 +107,16 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpGet("ticketType/{type}")]
+        [HttpGet("ticketType/{ticketType}")]
+        [TicketTypeWithTypeExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<Models.TicketPurchase>> GetTicketPurchasesByTicketType(string type)
+        public ActionResult<List<Models.TicketPurchase>> GetTicketPurchasesByTicketType(string ticketType)
         {
             try
             {
-                return Ok(_ticketPurchase.GetTicketPurchasesByTicketType(type));
+                return Ok(_ticketPurchase.GetTicketPurchasesByTicketType(ticketType));
             }
             catch(Exception e)
             {
@@ -124,6 +125,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpGet("sellingPoint/{sellingPointId}")]
+        [SellingPointWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -25,7 +25,7 @@ namespace SkiTickets.Controllers
         }
 
         [HttpPost]
-        [TicketTypeValidFilter]
+        [TicketTypeInTicketIsValidFilter]
         // [AgeValidFilter]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -72,10 +72,11 @@ namespace SkiTickets.Controllers
         }
         
         [HttpGet("{id}")]
-        [TicketExistsFilter]
+        [TicketWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        
         public ActionResult<List<Models.Ticket>> GetTicketById(int id)
         {
             try
@@ -93,7 +94,7 @@ namespace SkiTickets.Controllers
         }
         
         [HttpDelete("{id}")]
-        [TicketExistsFilter]
+        [TicketWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -114,33 +115,30 @@ namespace SkiTickets.Controllers
         }
         
         [HttpPut("{id}")]
-        [TicketExistsFilter]
+        [TicketWithIdExistsFilter]
+        [TicketTypeInTicketIsValidFilter]
         // [AgeValidFilter(info = typeof(PersonDto))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.Ticket> UpdateTicket(int id, TicketDto ticketDto)
         {
-            // try
-            // {
-            //     return Ok(_ticket.UpdateTicket(id, ticketDto));
-            // }
-            // catch (TicketNotFoundException e)
-            // {
-            //     return NotFound(e.Message);
-            // }
-            // catch (AgeNotFoundException e)
-            // {
-            //     return NotFound(e.Message);
-            // }
-            // catch (Exception e)
-            // {
-            //     return BadRequest();
-            // }
-            
-            return Ok(_ticket.UpdateTicket(id, ticketDto));
-            
-            // neki problem
+            try
+            {
+                return Ok(_ticket.UpdateTicket(id, ticketDto));
+            }
+            catch (TicketNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (AgeNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
     }
 }

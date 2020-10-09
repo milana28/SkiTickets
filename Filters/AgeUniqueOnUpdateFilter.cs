@@ -15,7 +15,7 @@ namespace SkiTickets.Utils.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var age = (AgeDto) context.ActionArguments["ageDto"];
-            var id = (int) context.ActionArguments["id"];
+            var id = (int) context.ActionArguments["ageId"];
             
             using IDbConnection database = new SqlConnection(MyConnectionString);
             

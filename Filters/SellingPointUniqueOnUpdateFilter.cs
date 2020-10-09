@@ -15,7 +15,7 @@ namespace SkiTickets.Utils.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var sellingPoint = (SellingPointDto) context.ActionArguments["sellingPointDto"];
-            var sellingPointId = (int) context.ActionArguments["id"];
+            var sellingPointId = (int) context.ActionArguments["sellingPointId"];
 
             using IDbConnection database = new SqlConnection(MyConnectionString);
 

@@ -56,16 +56,16 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("{ageId}")]
         [AgeWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Age> GetAgeById(int id)
+        public ActionResult<Models.Age> GetAgeById(int ageId)
         {
             try
             {
-                return Ok(_age.GetAgeById(id));
+                return Ok(_age.GetAgeById(ageId));
             }
             catch (AgeNotFoundException e)
             {
@@ -77,16 +77,16 @@ namespace SkiTickets.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{ageId}")]
         [AgeWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Age> DeleteAge(int id)
+        public ActionResult<Models.Age> DeleteAge(int ageId)
         {
             try
             {
-                return Ok(_age.DeleteAge(id));
+                return Ok(_age.DeleteAge(ageId));
             }
             catch (AgeNotFoundException e)
             {
@@ -98,18 +98,18 @@ namespace SkiTickets.Controllers
             }
         }
         
-        [HttpPut("{id}")]
+        [HttpPut("{ageId}")]
         [AgeWithIdExistsFilter]
         [MinYearsSmallerThanMaxYearsFilter]
         [AgeUniqueOnUpdateFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Age> UpdateAge(int id, AgeDto ageDto)
+        public ActionResult<Models.Age> UpdateAge(int ageId, AgeDto ageDto)
         {
             try
             {
-                return Ok(_age.UpdateAge(id, ageDto));
+                return Ok(_age.UpdateAge(ageId, ageDto));
             }
             catch (AgeNotFoundException e)
             {

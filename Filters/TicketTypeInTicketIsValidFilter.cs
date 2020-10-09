@@ -7,18 +7,18 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
-    public class TicketTypeValidFilter : ActionFilterAttribute
+    public class TicketTypeInTicketIsValidFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
-        private TicketDto _ticket = new TicketDto();
-        
+      
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _ticket = (TicketDto) context.ActionArguments["ticketDto"];
-            var type = _ticket.TicketType;
+            var ticket = (TicketDto) context.ActionArguments["ticketDto"];
+            var type = ticket.TicketType;
            
             using IDbConnection database = new SqlConnection(MyConnectionString);
+            
             const string sql = "SELECT * FROM SkiTickets.TicketType WHERE type = @type";
             var ticketType = database.QueryFirstOrDefault<AgeDao>(sql, new {type = type});
 
