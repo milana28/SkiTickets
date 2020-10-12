@@ -6,6 +6,7 @@ using SkiTickets.Domain;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
+using SkiTickets.Utils.Responses;
 
 namespace SkiTickets.Controllers
 {
@@ -29,7 +30,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Created("https://localhost:5001/Age", _age.CreateAge(ageDto));
+                return Created("https://localhost:5001/Age", new OkResponse<Models.Age>(_age.CreateAge(ageDto)));
             }
             catch (AgeBadRequestException e)
             {
@@ -48,7 +49,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_age.GetAll());
+                return Ok(new OkResponse<List<Models.Age>>(_age.GetAll()));
             }
             catch(Exception e)
             {
@@ -65,7 +66,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_age.GetAgeById(ageId));
+                return Ok(new OkResponse<Models.Age>(_age.GetAgeById(ageId)));
             }
             catch (AgeNotFoundException e)
             {
@@ -86,7 +87,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_age.DeleteAge(ageId));
+                return Ok(new OkResponse<Models.Age>(_age.DeleteAge(ageId)));
             }
             catch (AgeNotFoundException e)
             {
@@ -109,7 +110,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_age.UpdateAge(ageId, ageDto));
+                return Ok(new OkResponse<Models.Age>(_age.UpdateAge(ageId, ageDto)));
             }
             catch (AgeNotFoundException e)
             {

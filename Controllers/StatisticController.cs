@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
+using SkiTickets.Utils.Responses;
 
 namespace SkiTickets.Controllers
 {
@@ -24,7 +25,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_statistic.GetStatisticForPeriod(hours));
+                return Ok(new OkResponse<Models.Statistic>(_statistic.GetStatisticForPeriod(hours)));
             }
             catch (Exception e)
             {

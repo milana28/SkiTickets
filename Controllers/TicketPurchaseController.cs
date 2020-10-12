@@ -6,6 +6,7 @@ using SkiTickets.Domain;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
+using SkiTickets.Utils.Responses;
 
 namespace SkiTickets.Controllers
 {
@@ -32,7 +33,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Created("https://localhost:5001/TicketPurchase", _ticketPurchase.CreateTicketPurchase(ticketPurchaseDto));
+                return Created("https://localhost:5001/TicketPurchase", new OkResponse<Models.TicketPurchase>(_ticketPurchase.CreateTicketPurchase(ticketPurchaseDto)));
             }
             catch (NoCapacity e)
             {
@@ -60,7 +61,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Created("https://localhost:5001/TicketPurchase/{id}/check", _ticketUsed.CheckTicket(ticketPurchaseId));
+                return Created("https://localhost:5001/TicketPurchase/{id}/check", new OkResponse<Models.TicketUsed>(_ticketUsed.CheckTicket(ticketPurchaseId)));
             }
             catch (TicketPurchaseNotFoundException e)
             {
@@ -79,7 +80,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_ticketPurchase.GetAll());
+                return Ok(new OkResponse<List<Models.TicketPurchase>>(_ticketPurchase.GetAll()));
             }
             catch(Exception e)
             {
@@ -91,11 +92,11 @@ namespace SkiTickets.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<Models.TicketPurchase>> GetTicketPurchaseById(int ticketPurchaseId)
+        public ActionResult<Models.TicketPurchase> GetTicketPurchaseById(int ticketPurchaseId)
         {
             try
             {
-                return Ok(_ticketPurchase.GetTicketPurchaseById(ticketPurchaseId));
+                return Ok(new OkResponse<Models.TicketPurchase>(_ticketPurchase.GetTicketPurchaseById(ticketPurchaseId)));
             }
             catch(TicketPurchaseNotFoundException e)
             {
@@ -116,7 +117,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_ticketPurchase.GetTicketPurchasesByTicketType(ticketType));
+                return Ok(new OkResponse<List<Models.TicketPurchase>>(_ticketPurchase.GetTicketPurchasesByTicketType(ticketType)));
             }
             catch(Exception e)
             {
@@ -133,7 +134,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_ticketPurchase.GetTicketPurchasesBySellingPoint(sellingPointId));
+                return Ok(new OkResponse<List<Models.TicketPurchase>>(_ticketPurchase.GetTicketPurchasesBySellingPoint(sellingPointId)));
             }
             catch(Exception e)
             {

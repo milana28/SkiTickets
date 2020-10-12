@@ -33,7 +33,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Created("https://localhost:5001/Ticket", _ticket.CreateTicket(ticketDto));
+                return Created("https://localhost:5001/Ticket", new OkResponse<Models.Ticket>(_ticket.CreateTicket(ticketDto)));
             }
             catch (TicketTypeNotFoundException e)
             {
@@ -63,7 +63,7 @@ namespace SkiTickets.Controllers
                     return Ok(new PaginationResponse<Models.Ticket>((_ticket.GetTickets(age, fromDate, toDate)), page, pageSize));
                 }
               
-                return Ok(_ticket.GetTickets(age, fromDate, toDate));
+                return Ok(new OkResponse<List<Models.Ticket>>(_ticket.GetTickets(age, fromDate, toDate)));
             }
             catch (Exception e)
             {
@@ -77,11 +77,11 @@ namespace SkiTickets.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         
-        public ActionResult<List<Models.Ticket>> GetTicketById(int id)
+        public ActionResult<Models.Ticket> GetTicketById(int id)
         {
             try
             {
-                return Ok(_ticket.GetTicketById(id));
+                return Ok(new OkResponse<Models.Ticket>(_ticket.GetTicketById(id)));
             }
             catch (TicketNotFoundException e)
             {
@@ -102,7 +102,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_ticket.DeleteTicket(id));
+                return Ok(new OkResponse<Models.Ticket>(_ticket.DeleteTicket(id)));
             }
             catch (TicketNotFoundException e)
             {
@@ -117,28 +117,30 @@ namespace SkiTickets.Controllers
         [HttpPut("{id}")]
         [TicketWithIdExistsFilter]
         [TicketTypeInTicketIsValidFilter]
-        // [AgeValidFilter(info = typeof(PersonDto))]
+        [AgeValidFilter(Info = "ticketDto", TypeOfObject = typeof(TicketDto))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Models.Ticket> UpdateTicket(int id, TicketDto ticketDto)
         {
-            try
-            {
-                return Ok(_ticket.UpdateTicket(id, ticketDto));
-            }
-            catch (TicketNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (AgeNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest();
-            }
+            // try
+            // {
+            //     return Ok(_ticket.UpdateTicket(id, ticketDto));
+            // }
+            // catch (TicketNotFoundException e)
+            // {
+            //     return NotFound(e.Message);
+            // }
+            // catch (AgeNotFoundException e)
+            // {
+            //     return NotFound(e.Message);
+            // }
+            // catch (Exception e)
+            // {
+            //     return BadRequest();
+            // }
+            //
+            return Ok(new OkResponse<Models.Ticket>(_ticket.UpdateTicket(id, ticketDto)));
         }
     }
 }

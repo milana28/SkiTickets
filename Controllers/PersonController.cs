@@ -6,6 +6,7 @@ using SkiTickets.Domain;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
+using SkiTickets.Utils.Responses;
 
 namespace SkiTickets.Controllers
 {
@@ -29,7 +30,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Created("https://localhost:5001/Person", _person.CreatePerson(personDto));
+                return Created("https://localhost:5001/Person", new OkResponse<Models.Person>(_person.CreatePerson(personDto)));
             }
             catch (PersonBadRequestException e)
             {
@@ -48,7 +49,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_person.GetAll());
+                return Ok(new OkResponse<List<Models.Person>>(_person.GetAll()));
             }
             catch(Exception e)
             {
@@ -65,7 +66,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_person.GetPersonById(personId));
+                return Ok(new OkResponse<Models.Person>(_person.GetPersonById(personId)));
             }
             catch (PersonNotFoundException e)
             {
@@ -86,7 +87,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_person.DeletePerson(personId));
+                return Ok(new OkResponse<Models.Person>(_person.DeletePerson(personId)));
             }
             catch (PersonNotFoundException e)
             {
@@ -100,7 +101,7 @@ namespace SkiTickets.Controllers
         
         [HttpPut("{personId}")]
         [PersonWithIdExistsFilter]
-        [AgeValidFilter]
+        [AgeValidFilter(Info = "personDto")]
         [PersonUniqueOnUpdateFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -109,7 +110,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_person.UpdatePerson(personId, personDto));
+                return Ok(new OkResponse<Models.Person>(_person.UpdatePerson(personId, personDto)));
             }
             catch (PersonNotFoundException e)
             {

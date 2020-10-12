@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using Dapper;
@@ -11,15 +12,19 @@ namespace SkiTickets.Utils.Filters
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
-        private PersonDto _person = new PersonDto();
-        public object info;
-        
+        public string Info;
+        public object TypeOfObject;
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            _person = (PersonDto) context.ActionArguments["personDto"];
-            var ageType = _person.Age;
+            var model = TypeOfObject;
+            Console.WriteLine(model);
+
+            var myObject = (TicketDto) context.ActionArguments[Info];
+            var ageType = myObject.Age;
            
             using IDbConnection database = new SqlConnection(MyConnectionString);
+            
             const string sql = "SELECT * FROM SkiTickets.Age WHERE type = @type";
             var age = database.QueryFirstOrDefault<AgeDao>(sql, new {type = ageType});
 
@@ -31,4 +36,5 @@ namespace SkiTickets.Utils.Filters
             base.OnActionExecuting(context);
         }
     }
+
 }

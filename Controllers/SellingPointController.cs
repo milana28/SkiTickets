@@ -6,6 +6,7 @@ using SkiTickets.Domain;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 using SkiTickets.Utils.Filters;
+using SkiTickets.Utils.Responses;
 
 namespace SkiTickets.Controllers
 {
@@ -28,7 +29,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Created("https://localhost:5001/SellingPoint", _sellingPoint.CreateSellingPoint(sellingPointDto));
+                return Created("https://localhost:5001/SellingPoint", new OkResponse<Models.SellingPoint>(_sellingPoint.CreateSellingPoint(sellingPointDto)));
             }
             catch (SellingPointBadRequestException e)
             {
@@ -47,7 +48,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_sellingPoint.GetAll());
+                return Ok(new OkResponse<List<Models.SellingPoint>>(_sellingPoint.GetAll()));
             }
             catch(Exception e)
             {
@@ -64,7 +65,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_sellingPoint.GetSellingPointById(sellingPointId));
+                return Ok(new OkResponse<Models.SellingPoint>(_sellingPoint.GetSellingPointById(sellingPointId)));
             }
             catch (SellingPointNotFoundException e)
             {
@@ -85,7 +86,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_sellingPoint.DeleteSellingPoint(sellingPointId));
+                return Ok(new OkResponse<Models.SellingPoint>(_sellingPoint.DeleteSellingPoint(sellingPointId)));
             }
             catch (SellingPointNotFoundException e)
             {
@@ -107,7 +108,7 @@ namespace SkiTickets.Controllers
         {
             try
             {
-                return Ok(_sellingPoint.UpdateSellingPoint(sellingPointId, sellingPointDto));
+                return Ok(new OkResponse<Models.SellingPoint>(_sellingPoint.UpdateSellingPoint(sellingPointId, sellingPointDto)));
             }
             catch (SellingPointNotFoundException e)
             {
