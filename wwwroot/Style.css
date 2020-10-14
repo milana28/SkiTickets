@@ -1,0 +1,17 @@
+.ticket {
+    margin: auto;
+    width: 30%;
+    height: 60%;
+    border: 1px solid GrayText;
+}
+
+.image {
+    width: 100%;
+}
+
+p {
+    padding: 10px 20px;
+    color: cornflowerblue;
+}
+
+

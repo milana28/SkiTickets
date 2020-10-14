@@ -2,6 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GenerateProgramFile>false</GenerateProgramFile>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <EnableDefaultContentItems>false</EnableDefaultContentItems>
 	<PreserveCompilationContext>true</PreserveCompilationContext>
 	<PreserveCompilationReferences>true</PreserveCompilationReferences>
     </PropertyGroup>
@@ -20,8 +23,11 @@
      <Content Include="libwkhtmltox.so">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
      </Content>
+     <Content Update="wwwroot\Style.css">
+       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </Content>
     </ItemGroup>
 
-
-
 </Project>
+
+

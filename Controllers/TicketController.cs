@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -179,9 +180,10 @@ namespace SkiTickets.Controllers
                 WebSettings =
                 {
                     DefaultEncoding = "utf-8",
-                    UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "Assets", "Style.css")
+                    UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Style.css"),
+                    LoadImages = true
                 },
-                HeaderSettings = {FontName = "Arial", FontSize = 9, Right = "[page]/[toPage]", Line = true},
+                HeaderSettings = {FontName = "Arial", FontSize = 7, Right = "[page]/[toPage]", Line = true},
             };
 
             var pdf = new HtmlToPdfDocument()
@@ -193,6 +195,20 @@ namespace SkiTickets.Controllers
             var file = _converter.Convert(pdf);
 
             return File(file, "applicaation/pdf");
+        }
+        
+        [HttpGet("{id}/page")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Models.Ticket>> GenerateRazorPage(int id)
+        {
+            var ticket = _ticket.GetTicketById(id);
+            return new ContentResult {
+                ContentType = "text/html",
+                StatusCode = (int) HttpStatusCode.OK,
+                Content = await _template.GetHtmlString(ticket),
+            };
         }
     }
 }

@@ -1,19 +1,19 @@
 @model SkiTickets.Pages.Pdf
 
 <!DOCTYPE html>
-
 <html lang="">
 <head>
+    <link  type="text/css" rel="stylesheet" href="Style.css">
     <title>Ticket</title>
 </head>
 <body>
-<div>
-    <p>@Model.Ticket.TicketType.Name - @Model.Ticket.TicketType.Type ticket</p>
-    <p>Age: @Model.Ticket.TicketType.Age</p>
-    <p>Number of days: @Model.Ticket.TicketType.Days</p>
-    <p>Price: @Model.Ticket.Price</p>
-    <p>From: @Model.Ticket.FromDate</p>
-    <p>To: @Model.Ticket.ToDate</p>
+<div class="ticket">
+    <img src="http://i.pinimg.com/originals/74/6e/04/746e04d4a86c9f982cc0bec2b430a0d7.png" alt="" asp-append-version="true" class="image">
+    <hr style="background-color: cornflowerblue">
+    <p style="text-align: center; text-transform: uppercase"><b>@Model.Ticket.TicketType.Name - @Model.Ticket.TicketType.Type ticket</b></p>
+    <p style="text-align: center">@Model.Ticket.FromDate.GetDateTimeFormats()[0] - @Model.Ticket.ToDate.GetDateTimeFormats()[0]</p>
+    <hr style="background-color: cornflowerblue">
+    <p style="text-transform: uppercase"><b>@Model.Ticket.TicketType.Age</b> <b style="float: right">@Model.Ticket.Price€</b></p>
 </div>
 </body>
 </html>
