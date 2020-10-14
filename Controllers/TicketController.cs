@@ -196,20 +196,6 @@ namespace SkiTickets.Controllers
 
             return File(file, "applicaation/pdf");
         }
-        
-        [HttpGet("{id}/page")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Models.Ticket>> GenerateRazorPage(int id)
-        {
-            var ticket = _ticket.GetTicketById(id);
-            return new ContentResult {
-                ContentType = "text/html",
-                StatusCode = (int) HttpStatusCode.OK,
-                Content = await _template.GetHtmlString(ticket),
-            };
-        }
     }
 }
 
