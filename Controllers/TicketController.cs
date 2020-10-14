@@ -168,7 +168,6 @@ namespace SkiTickets.Controllers
                 PaperSize = PaperKind.A4,
                 Margins = new MarginSettings {Top = 10, Bottom = 10, Left = 10, Right = 10},
                 DocumentTitle = "Ticket",
-                // Out = @"Ticket.pdf"
             };
 
             var objectSetting = new ObjectSettings()
@@ -178,7 +177,7 @@ namespace SkiTickets.Controllers
                 WebSettings =
                 {
                     DefaultEncoding = "utf-8",
-                    UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Style.css"),
+                    UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Css/Style.css"),
                     LoadImages = true
                 },
                 HeaderSettings = {FontName = "Arial", FontSize = 7, Right = "[page]/[toPage]", Line = true},

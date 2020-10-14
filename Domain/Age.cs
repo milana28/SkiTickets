@@ -52,10 +52,10 @@ namespace SkiTickets.Domain
         }
         public Models.Age GetAgeById(int id)
         {
-            if (id == 1)
-            {
-                throw new Exception();
-            }
+            // if (id == 1)
+            // {
+            //     throw new Exception();
+            // }
             const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @ageId";
             return TransformDaoToBusinessLogicAge(_database.QueryFirstOrDefault<AgeDao>(sql, new {ageId = id}));
         }
