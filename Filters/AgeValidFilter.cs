@@ -8,19 +8,16 @@ using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Utils.Filters
 {
+    
     public sealed class AgeValidFilter : ActionFilterAttribute
     {
         private const string MyConnectionString =
             "Server=localhost;Database=skitickets;User Id=sa;Password=yourStrong(!)Password;";
         public string Info;
-        public object TypeOfObject;
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var model = TypeOfObject;
-            Console.WriteLine(model);
-
-            var myObject = (TicketDto) context.ActionArguments[Info];
+            var myObject = (AgeInfo) context.ActionArguments[Info];
             var ageType = myObject.Age;
            
             using IDbConnection database = new SqlConnection(MyConnectionString);

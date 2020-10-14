@@ -1,3 +1,6 @@
+using System.IO;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SkiTickets.Domain;
+using SkiTickets.Pdf;
 using SkiTickets.Utils;
 using SkiTickets.Utils.Responses;
 
@@ -34,16 +38,23 @@ namespace SkiTickets
             services.AddSingleton<ITicketPurchase, TicketPurchase>();
             services.AddSingleton<ITicketUsed, TicketUsed>();
             services.AddSingleton<IStatistic, Statistic>();
+            services.AddSingleton<TemplateGenerator>();
+            services.AddRazorPages();
+            services.AddMvc();
             
-            services.AddMvc()
-                .ConfigureApiBehaviorOptions(options =>
-                {
-                    options.InvalidModelStateResponseFactory = context =>
-                    {
-                        var problems = new CustomBadRequest(context);
-                        return new BadRequestObjectResult(problems);
-                    };
-                });
+            var context = new CustomAssemblyLoadContext(); 
+            context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "libwkhtmltox.so"));
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+            
+            // services.AddMvc()
+            //     .ConfigureApiBehaviorOptions(options =>
+            //     {
+                    // options.InvalidModelStateResponseFactory = context =>
+                    // {
+                    //     var problems = new CustomBadRequest(context);
+                    //     return new BadRequestObjectResult(problems);
+                    // };
+                // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

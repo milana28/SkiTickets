@@ -14,7 +14,7 @@ namespace SkiTickets.Utils.Filters
         
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var ticketId = (int) context.ActionArguments["id"];
+            var ticketId = (int) context.ActionArguments["ticketId"];
             using IDbConnection database = new SqlConnection(MyConnectionString);
             
             const string sql = "SELECT * FROM SkiTickets.Ticket WHERE id = @id";

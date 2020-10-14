@@ -34,11 +34,11 @@ namespace SkiTickets.Controllers
             }
             catch (AgeBadRequestException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message));
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message));
             }
         }
 
@@ -74,7 +74,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message));
             }
         }
 

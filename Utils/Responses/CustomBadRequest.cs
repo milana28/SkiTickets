@@ -9,9 +9,9 @@ namespace SkiTickets.Utils.Responses
         {
             Status = 400;
             Title = "Invalid arguments";
-            Detail = "The inputs supplied to the API are invalid";
+            // Detail = "The inputs supplied to the API are invalid";
             Type = context.HttpContext.TraceIdentifier;
-            ConstructErrorMessages(context);
+            // ConstructErrorMessages(context);
         }
         
         private void ConstructErrorMessages(ActionContext context)
@@ -39,7 +39,7 @@ namespace SkiTickets.Utils.Responses
                 }
             }
         }
-
+        
         private static string GetErrorMessage(ModelError error)
         {
             return string.IsNullOrEmpty(error.ErrorMessage) ? "error" :

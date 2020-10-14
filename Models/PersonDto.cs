@@ -2,7 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SkiTickets.Models
 {
-    public class PersonDto
+    public class AgeInfo
+    {
+        [Required]
+        public string Age { set; get; }
+    }
+    public class PersonDto : AgeInfo
     {
         public int Id { set; get; }
         [Required]
@@ -11,7 +16,5 @@ namespace SkiTickets.Models
         [Required]
         [StringLength(100)]
         public string LastName { set; get; }
-        [Required]
-        public string Age { set; get; }
     }
 }
