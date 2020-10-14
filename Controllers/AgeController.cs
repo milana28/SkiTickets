@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
@@ -34,11 +36,11 @@ namespace SkiTickets.Controllers
             }
             catch (AgeBadRequestException e)
             {
-                return BadRequest(new ErrorResponse(e.Message));
+                return BadRequest();
             }
             catch (Exception e)
             {
-                return BadRequest(new ErrorResponse(e.Message));
+                return BadRequest();
             }
         }
 
