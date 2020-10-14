@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace SkiTickets.Utils
+namespace SkiTickets.Utils.Models
 {
     public class Error
     {

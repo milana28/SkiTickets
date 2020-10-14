@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SkiTickets.Utils.Models;
 
 namespace SkiTickets.Utils
 {

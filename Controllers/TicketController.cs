@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +8,10 @@ using Microsoft.Extensions.Caching.Memory;
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using SkiTickets.Domain;
+using SkiTickets.Filters;
 using SkiTickets.Models;
 using SkiTickets.Pdf;
 using SkiTickets.Utils.Exceptions;
-using SkiTickets.Utils.Filters;
 using SkiTickets.Utils.Responses;
 using ColorMode = DinkToPdf.ColorMode;
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 
-namespace SkiTickets.Utils.Filters
+namespace SkiTickets.Filters
 {
     public class SellingPointInTicketPurchaseIsValidFilter : ActionFilterAttribute
     {

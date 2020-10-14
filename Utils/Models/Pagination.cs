@@ -1,4 +1,4 @@
-namespace SkiTickets.Utils
+namespace SkiTickets.Utils.Models
 {
     public class Pagination
     {

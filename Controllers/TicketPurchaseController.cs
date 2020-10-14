@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
+using SkiTickets.Filters;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
-using SkiTickets.Utils.Filters;
 using SkiTickets.Utils.Responses;
 
 namespace SkiTickets.Controllers

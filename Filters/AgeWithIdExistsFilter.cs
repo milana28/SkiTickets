@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using SkiTickets.Models;
 using SkiTickets.Utils.Exceptions;
 
-namespace SkiTickets.Utils.Filters
+namespace SkiTickets.Filters
 {
     [AttributeUsage(AttributeTargets.All)]
     public sealed class AgeWithIdExistsFilter : ActionFilterAttribute
