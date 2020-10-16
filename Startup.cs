@@ -47,16 +47,6 @@ namespace SkiTickets
             var context = new CustomAssemblyLoadContext(); 
             context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "libwkhtmltox.so"));
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
-            
-            // services.AddMvc()
-            //     .ConfigureApiBehaviorOptions(options =>
-            //     {
-                    // options.InvalidModelStateResponseFactory = context =>
-                    // {
-                    //     var problems = new CustomBadRequest(context);
-                    //     return new BadRequestObjectResult(problems);
-                    // };
-                // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

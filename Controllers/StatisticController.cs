@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkiTickets.Domain;
@@ -29,7 +30,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"hours"}));
             }
         }
     }

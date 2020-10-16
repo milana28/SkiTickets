@@ -52,7 +52,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ticket"}));
             }
         }
 
@@ -81,21 +81,21 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"age","from","to","page","pageSize"}));
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{ticketId}")]
         [TicketWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public ActionResult<Models.Ticket> GetTicketById(int id)
+        public ActionResult<Models.Ticket> GetTicketById(int ticketId)
         {
             try
             {
-                return Ok(new OkResponse<Models.Ticket>(_ticket.GetTicketById(id)));
+                return Ok(new OkResponse<Models.Ticket>(_ticket.GetTicketById(ticketId)));
             }
             catch (TicketNotFoundException e)
             {
@@ -103,20 +103,20 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ticketId"}));
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{ticketId}")]
         [TicketWithIdExistsFilter]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Ticket> DeleteTicket(int id)
+        public ActionResult<Models.Ticket> DeleteTicket(int ticketId)
         {
             try
             {
-                return Ok(new OkResponse<Models.Ticket>(_ticket.DeleteTicket(id)));
+                return Ok(new OkResponse<Models.Ticket>(_ticket.DeleteTicket(ticketId)));
             }
             catch (TicketNotFoundException e)
             {
@@ -124,22 +124,22 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ticketId"}));
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{ticketId}")]
         [TicketWithIdExistsFilter]
         [TicketTypeInTicketIsValidFilter]
         [AgeValidFilter(Info = "ticketDto")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Models.Ticket> UpdateTicket(int id, TicketDto ticketDto)
+        public ActionResult<Models.Ticket> UpdateTicket(int ticketId, TicketDto ticketDto)
         {
             try
             {
-                return Ok(_ticket.UpdateTicket(id, ticketDto));
+                return Ok(_ticket.UpdateTicket(ticketId, ticketDto));
             }
             catch (TicketNotFoundException e)
             {
@@ -151,7 +151,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ticket","ticketId"}));
             }
         }
 

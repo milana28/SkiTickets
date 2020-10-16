@@ -34,11 +34,11 @@ namespace SkiTickets.Controllers
             }
             catch (AgeBadRequestException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"age"}));
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"age"}));
             }
         }
 
@@ -53,7 +53,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, null));
             }
         }
         
@@ -74,7 +74,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new ErrorResponse(e.Message));
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ageId"}));
             }
         }
 
@@ -95,7 +95,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ageId"}));
             }
         }
         
@@ -118,11 +118,11 @@ namespace SkiTickets.Controllers
             }
             catch (AgeBadRequestException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"age","ageId"}));
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"age","ageId"}));
             }
         }
     }

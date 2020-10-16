@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading;
 using Dapper;
 using SkiTickets.Models;
 using SkiTickets.Utils;
-using SkiTickets.Utils.Exceptions;
 
 namespace SkiTickets.Domain
 {
@@ -52,10 +49,6 @@ namespace SkiTickets.Domain
         }
         public Models.Age GetAgeById(int id)
         {
-            // if (id == 1)
-            // {
-            //     throw new Exception();
-            // }
             const string sql = "SELECT * FROM SkiTickets.Age WHERE id = @ageId";
             return TransformDaoToBusinessLogicAge(_database.QueryFirstOrDefault<AgeDao>(sql, new {ageId = id}));
         }

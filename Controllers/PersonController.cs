@@ -34,11 +34,11 @@ namespace SkiTickets.Controllers
             }
             catch (PersonBadRequestException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"person"}));
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"person"}));
             }
         }
 
@@ -53,7 +53,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, null));
             }
         }
         
@@ -74,7 +74,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"personId"}));
             }
         }
 
@@ -95,7 +95,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"personId"}));
             }
         }
         
@@ -122,11 +122,11 @@ namespace SkiTickets.Controllers
             }
             catch (PersonBadRequestException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"person","personId"}));
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"person","personId"}));
             }
         }
     }

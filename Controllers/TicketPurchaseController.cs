@@ -41,15 +41,15 @@ namespace SkiTickets.Controllers
             }
             catch (AgesNotMatchingException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"age"}));
             }
             catch (SellingPointNotFoundException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"sellingPoint"}));
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ticketPurchase"}));
             }
         }
         
@@ -69,7 +69,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ticketPurchaseId"}));
             }
         }
         
@@ -84,7 +84,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, null));
             }
         }
         [HttpGet("{ticketPurchaseId}")]
@@ -104,7 +104,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ticketPurchaseId"}));
             }
         }
         
@@ -121,7 +121,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"ticketType"}));
             }
         }
         
@@ -138,7 +138,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"sellingPointId"}));
             }
         }
     }

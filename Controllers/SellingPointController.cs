@@ -33,11 +33,11 @@ namespace SkiTickets.Controllers
             }
             catch (SellingPointBadRequestException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"sellingPoint"}));
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"sellingPoint"}));
             }
         }
         
@@ -52,7 +52,7 @@ namespace SkiTickets.Controllers
             }
             catch(Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, null));
             }
         }
         
@@ -73,7 +73,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"sellingPointId"}));
             }
         }
         
@@ -94,7 +94,7 @@ namespace SkiTickets.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"sellingPointId"}));
             }
         }
         
@@ -116,11 +116,11 @@ namespace SkiTickets.Controllers
             }
             catch (SellingPointBadRequestException e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"sellingPoint","sellingPointId"}));
             }
             catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(new ErrorResponse(e.Message, new List<string>(){"sellingPoint","sellingPointId"}));
             }
         }
     }
