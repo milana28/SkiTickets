@@ -47,7 +47,6 @@ namespace SkiTickets.Domain
         }
         public List<Models.Ticket> GetTickets(string? age, DateTime? from, DateTime? to)
         {
-            throw new Exception("Some error occured");
             if (from != null && to != null)
             {
                 return GetTicketsWithinDate(from, to); 
